@@ -183,6 +183,7 @@ figure{margin:12px 0 8px}
 .goal-picker[hidden]{display:none}
 .goal-picker label{font-size:13px;font-weight:500}
 .goal-picker select{font:inherit;color:var(--ink);background:#fff;border:1px solid var(--g3);border-radius:4px;min-height:44px;padding:8px 32px 8px 10px;flex:1;min-width:0;max-width:100%;cursor:pointer}
+.goal-picker select.team{flex:0 0 auto}
 .goal-picker .goal-count{font-size:12px;color:var(--ink2);white-space:nowrap}
 .goal-picker select:hover{border-color:var(--ink2)}
 .goal-picker select:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
@@ -577,6 +578,14 @@ print(produced("rocket_part"))</pre></div>
           <option value="rocket_part_v4">Rocket parts</option>
           <option value="rocket_launch_v4">Rocket launch</option>
         </select>
+        <label for="result-team">Team size</label>
+        <select id="result-team" class="team" aria-controls="goal-results">
+          <option value="">All</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="4">4</option>
+          <option value="8">8</option>
+        </select>
         <span id="goal-result-summary" class="goal-count" role="status" hidden></span>
       </div>
       <div class="goal-results-wrap">
@@ -956,16 +965,19 @@ print(produced("rocket_part"))</pre></div>
   var select=document.getElementById('result-goal');
   var table=document.getElementById('goal-results');
   var summary=document.getElementById('goal-result-summary');
+  var team=document.getElementById('result-team');
   var rows=Array.from(table.tBodies[0].rows);
   function showGoal(){
     var count=0;
     rows.forEach(function(row){
-      row.hidden=row.cells[1].textContent.trim()!==select.value;
+      var n=(row.cells[0].textContent.match(/team size (\d+)/)||[])[1];
+      row.hidden=row.cells[1].textContent.trim()!==select.value||(team.value&&n!==team.value);
       if(!row.hidden) count++;
     });
-    summary.textContent=count+' runs';
+    summary.textContent=count+(count===1?' run':' runs');
   }
   select.addEventListener('change',showGoal);
+  team.addEventListener('change',showGoal);
   table.classList.add('goal-filtered');
   document.querySelector('.goal-picker').hidden=false;
   summary.hidden=false;
