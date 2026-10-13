@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FCB Production goals</title>
+<style>
+:root{
+  --ink:#000;--ink2:#525252;--ink3:#8a8a8a;--rule:#e5e5e5;--rule2:#ededed;--panel:#fbfbfb;
+  --pass:#1a7f37;--fail:#cf222e;
+  --sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"Berkeley Mono","SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+h2[id],h3[id],h4[id],section[id]{scroll-margin-top:24px}
+body{background:#fff;color:var(--ink);font:400 14px/21px var(--sans)}
+a{color:inherit}
+code,.mono{font-family:var(--mono)}
+.mast{border-bottom:1px solid var(--rule)}
+.mast-in{max-width:1180px;margin:0 auto;padding:22px 16px 26px;display:flex;flex-direction:column;gap:14px}
+.eyebrow{font-size:12px;color:var(--ink2)}
+.eyebrow a{font-weight:500;color:var(--ink);text-decoration:none}
+.eyebrow a:hover{text-decoration:underline}
+.mast h1{font-size:44px;line-height:1.05;font-weight:400;letter-spacing:-.02em}
+.mast .sub{font-size:15px;line-height:22px;color:var(--ink2);max-width:720px}
+.mast .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.mast .links a,.mast .links span{font-size:12px;text-decoration:none;border:1px solid var(--rule);border-radius:4px;padding:5px 10px;color:var(--ink)}
+.mast .links a:hover{background:var(--panel)}
+.mast .links a.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.mast .links span.off{color:var(--ink3);background:var(--panel);cursor:not-allowed}
+.layout{max-width:1180px;margin:0 auto;padding:40px 16px 0;display:grid;grid-template-columns:176px minmax(0,820px);gap:0 64px}
+.toc{position:sticky;top:24px;align-self:start;font-size:14px;line-height:21px;max-height:calc(100vh - 48px);overflow:auto}
+.toc .lbl{font-size:11px;letter-spacing:.08em;color:var(--ink2);padding:4px 12px;margin-bottom:6px}
+.toc a{display:block;color:var(--ink2);text-decoration:none;padding:4px 12px}
+.toc a:hover{color:var(--ink)}
+.toc a.sub{font-size:12px;padding:2px 12px 2px 26px;color:var(--ink3)}
+.article{min-width:0;padding-bottom:40px}
+section.rep{padding:32px 0 8px;border-top:1px solid var(--rule2)}
+section.rep:first-child{padding-top:0;border-top:0}
+h2{font-size:24px;line-height:32px;font-weight:400;margin-bottom:12px}
+h3{font-size:16px;line-height:23px;font-weight:500;margin:24px 0 8px}
+h4{font-size:14px;line-height:21px;font-weight:500;margin:18px 0 6px}
+h5,h6{font-size:13px;font-weight:500;margin:14px 0 6px}
+p,li{font-size:15px;line-height:22px;color:var(--ink2)}
+p{margin-bottom:12px}
+ul,ol{margin:0 0 12px 22px}
+li{margin-bottom:4px}
+p b,p strong,li strong{color:var(--ink);font-weight:500}
+p a,li a,td a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--g3,#bdbdbd);text-underline-offset:2px}
+p code,li code,td code{font-size:.88em;background:var(--panel);border:1px solid var(--rule2);border-radius:3px;padding:0 3px}
+pre{font-family:var(--mono);font-size:12px;line-height:17px;background:var(--panel);border:1px solid var(--rule);padding:10px 12px;overflow:auto;margin:0 0 14px;max-height:520px}
+.tw{overflow-x:auto;margin:6px 0 16px}
+table{border-collapse:collapse;width:100%;font-size:12.5px;line-height:18px}
+th,td{text-align:left;vertical-align:top;padding:6px 10px 6px 0;border-bottom:1px solid var(--rule2);color:var(--ink2)}
+th{font-weight:500;color:var(--ink);border-bottom:1px solid var(--rule)}
+td:first-child{color:var(--ink)}
+.meta{font-family:var(--mono);font-size:12px;color:var(--ink3);margin:-6px 0 12px}
+.kv{display:grid;grid-template-columns:170px 1fr;gap:0;border-top:1px solid var(--rule2);margin:8px 0 16px}
+.kv div{padding:6px 10px 6px 0;border-bottom:1px solid var(--rule2);font-size:13px;line-height:19px;color:var(--ink2)}
+.kv div:nth-child(odd){color:var(--ink);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chips span{font-family:var(--mono);font-size:11px;border:1px solid var(--rule);border-radius:3px;padding:1px 6px;color:var(--ink2)}
+details{border:1px solid var(--rule);margin:8px 0 14px;background:#fff}
+details>summary{cursor:pointer;padding:8px 12px;font-size:13px;color:var(--ink);list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary:before{content:"+";font-family:var(--mono);color:var(--ink3);margin-right:8px}
+details[open]>summary:before{content:"−"}
+details>.body{padding:4px 14px 6px;border-top:1px solid var(--rule2)}
+.doc img{max-width:100%;height:auto;border:1px solid var(--rule2)}
+.goal{padding:36px 0 20px;border-top:1px solid var(--rule2)}
+.goal:first-of-type{padding-top:8px;border-top:0}
+.goal h3{margin-top:0}
+.foot{border-top:1px solid var(--rule);margin-top:24px;padding:24px 16px 40px;font-size:12px;color:var(--ink2);text-align:center}
+.foot a{color:var(--ink)}
+@media (max-width:960px){.layout{grid-template-columns:1fr}.toc{display:none}.mast h1{font-size:34px}}
+@media (max-width:640px){.kv{grid-template-columns:1fr}.kv div:nth-child(odd){border-bottom:0;padding-bottom:0}}
+</style>
+</head>
+<body>
+<!-- generated by tools/build_public_subpages.py; edit the sources, not this file -->
+<header class="mast">
+  <div class="mast-in">
+    <div class="eyebrow"><a href="./">Factory Coordination Bench</a></div>
+    <h1>Production goals</h1>
+    <div class="sub">The nine scored goals of suite T. Every run of every model uses these contracts unchanged; a goal passes only if the factory holds its target rate after the agents stop building.</div>
+    <div class="links">
+      <span class="off" title="The repository is not public yet">Repository</span>
+      <a href="fcb_goals.html" class=on>Production goals</a>
+      <a href="fcb_mechanics.html">Mechanics</a>
+      <a href="fcb_experiments.html">Experiments</a>
+    </div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="toc">
+    <div class="lbl">CONTENTS</div>
+    <a href="#production">Production</a>
+    <a class=sub href="#red_science_12_v4">Red science</a>
+    <a class=sub href="#red_science_12_v4_defended">Red science · defended</a>
+    <a class=sub href="#bootstrap_red_science">Bootstrap red science</a>
+    <a class=sub href="#bootstrap_red_science_defended">Bootstrap red science · defended</a>
+    <a href="#scale-power">Scale &amp; power</a>
+    <a class=sub href="#green_science_outpost">Green-science outpost</a>
+    <a class=sub href="#solar_night">Solar through the night</a>
+    <a class=sub href="#blue_science_v4">Blue science</a>
+    <a href="#deep-chains">Deep chains</a>
+    <a class=sub href="#rocket_part_v4">Rocket parts</a>
+    <a class=sub href="#rocket_launch_v4">Rocket launch</a>
+  </nav>
+  <main class="article">
+    <section class="rep" id="production">
+      <h2>Production</h2>
+      <div class="goal">
+      <h3 id="red_science_12_v4">Red science</h3>
+      <div class="meta">team.red_science_12.v4 · fcb/suites/T/red_science_12_v4.yaml</div>
+      <div class="kv"><div>Target</div><div>red science &gt;= 12/min</div><div>Horizon</div><div>20 rounds × 30 game-seconds, 20 build calls per agent per round</div><div>Scoring</div><div>unattended holdout 240 s, lowest rate over any 60 s span</div><div>World</div><div>64 × 64 tiles, world seed 0, empty start</div><div>Inventory</div><div>shared stash</div><div>Entity cap</div><div>&lt;= 400</div><div>Starting stash</div><div><div class="chips"><span>belt 200</span><span>underground_in 4</span><span>underground_out 4</span><span>inserter 24</span><span>long_inserter 10</span><span>power_pole 25</span><span>drill 4</span><span>burner_drill 4</span><span>burner_inserter 4</span><span>furnace 6</span><span>assembler 6</span><span>chest 4</span><span>offshore_pump 2</span><span>boiler 2</span><span>steam_engine 4</span><span>generator 1</span><span>iron_plate 40</span></div></div><div>Forbidden</div><div><div class="chips"><span>creative_spawn</span><span>editor_mode</span><span>rcon_unlisted</span><span>buffer_holdout</span><span>oil</span><span>logistic_bots</span><span>turrets</span><span>trains</span></div></div></div>
+      <p>Scripted reference team: <a href="fcb_experiments.html#red_science_12_v4">Red science reference solution</a>.</p>
+      </div>
+      <div class="goal">
+      <h3 id="red_science_12_v4_defended">Red science · defended</h3>
+      <div class="meta">team.red_science_12.v4.defended · fcb/suites/T/red_science_12_v4_defended.yaml</div>
+      <div class="kv"><div>Target</div><div>red science &gt;= 12/min</div><div>Horizon</div><div>20 rounds × 30 game-seconds, 20 build calls per agent per round</div><div>Scoring</div><div>unattended holdout 1200 s, lowest rate over any 60 s span</div><div>World</div><div>64 × 64 tiles, world seed 0, empty start</div><div>Inventory</div><div>shared stash</div><div>Entity cap</div><div>&lt;= 400</div><div>Enemies</div><div>1 spawner(s); expansion off</div><div>Starting stash</div><div><div class="chips"><span>belt 200</span><span>underground_in 4</span><span>underground_out 4</span><span>inserter 24</span><span>long_inserter 10</span><span>power_pole 25</span><span>drill 4</span><span>burner_drill 4</span><span>burner_inserter 4</span><span>furnace 6</span><span>assembler 7</span><span>chest 4</span><span>offshore_pump 2</span><span>boiler 2</span><span>steam_engine 4</span><span>generator 1</span><span>iron_plate 40</span><span>gun_turret 6</span><span>wall 40</span><span>repair_pack 10</span></div></div><div>Forbidden</div><div><div class="chips"><span>creative_spawn</span><span>editor_mode</span><span>rcon_unlisted</span><span>buffer_holdout</span><span>oil</span><span>logistic_bots</span><span>trains</span></div></div></div>
+      <p>Scripted reference team: <a href="fcb_experiments.html#red_science_12_v4_defended">Red science · defended reference solution</a>.</p>
+      </div>
+      <div class="goal">
+      <h3 id="bootstrap_red_science">Bootstrap red science</h3>
+      <div class="meta">team.bootstrap_red_science.v4 · fcb/suites/T/bootstrap_red_science.yaml</div>
+      <div class="kv"><div>Target</div><div>red science &gt;= 6/min</div><div>Horizon</div><div>60 rounds × 30 game-seconds, 20 build calls per agent per round</div><div>Scoring</div><div>unattended holdout 240 s, lowest rate over any 60 s span</div><div>World</div><div>64 × 64 tiles, world seed 0, empty start</div><div>Inventory</div><div>shared stash</div><div>Entity cap</div><div>&lt;= 400</div><div>Research</div><div>automation</div><div>Starting stash</div><div><div class="chips"><span>iron_plate 50</span><span>copper_plate 30</span><span>burner_drill 3</span><span>furnace 1</span><span>wood 20</span></div></div><div>Forbidden</div><div><div class="chips"><span>creative_spawn</span><span>editor_mode</span><span>rcon_unlisted</span><span>buffer_holdout</span><span>oil</span><span>logistic_bots</span><span>turrets</span><span>trains</span></div></div></div>
+      <p>Scripted reference team: <a href="fcb_experiments.html#bootstrap_red_science">Bootstrap red science reference solution</a>.</p>
+      </div>
+      <div class="goal">
+      <h3 id="bootstrap_red_science_defended">Bootstrap red science · defended</h3>
+      <div class="meta">team.bootstrap_red_science.v4.defended · fcb/suites/T/bootstrap_red_science_defended.yaml</div>
+      <div class="kv"><div>Target</div><div>red science &gt;= 6/min</div><div>Horizon</div><div>60 rounds × 30 game-seconds, 20 build calls per agent per round</div><div>Scoring</div><div>unattended holdout 1200 s, lowest rate over any 60 s span</div><div>World</div><div>64 × 64 tiles, world seed 0, empty start</div><div>Inventory</div><div>shared stash</div><div>Entity cap</div><div>&lt;= 400</div><div>Enemies</div><div>1 spawner(s); expansion off</div><div>Research</div><div>automation</div><div>Starting stash</div><div><div class="chips"><span>iron_plate 50</span><span>copper_plate 30</span><span>burner_drill 3</span><span>furnace 1</span><span>wood 20</span><span>firearm_magazine 10</span><span>gun_turret 6</span><span>wall 40</span><span>repair_pack 10</span></div></div><div>Forbidden</div><div><div class="chips"><span>creative_spawn</span><span>editor_mode</span><span>rcon_unlisted</span><span>buffer_holdout</span><span>oil</span><span>logistic_bots</span><span>trains</span></div></div></div>
+      <p>Scripted reference team: <a href="fcb_experiments.html#bootstrap_red_science_defended">Bootstrap red science · defended reference solution</a>.</p>
+      </div>
+    </section>
+    <section class="rep" id="scale-power">
+      <h2>Scale &amp; power</h2>
+      <div class="goal">
+      <h3 id="green_science_outpost">Green-science outpost</h3>
+      <div class="meta">team.green_science_outpost.v4 · fcb/suites/T/green_science_outpost.yaml</div>
+      <div class="kv"><div>Target</div><div>green science &gt;= 4/min</div><div>Horizon</div><div>44 rounds × 30 game-seconds, 20 build calls per agent per round</div><div>Scoring</div><div>unattended holdout 240 s, lowest rate over any 90 s span</div><div>World</div><div>288 × 96 tiles, world seed 0, empty start</div><div>Inventory</div><div>shared stash</div><div>Entity cap</div><div>&lt;= 1500</div><div>Starting stash</div><div><div class="chips"><span>underground_in 4</span><span>underground_out 4</span><span>inserter 34</span><span>long_inserter 5</span><span>power_pole 2</span><span>medium_pole 54</span><span>drill 4</span><span>burner_drill 7</span><span>burner_inserter 15</span><span>furnace 5</span><span>assembler 7</span><span>chest 6</span><span>offshore_pump 1</span><span>boiler 1</span><span>steam_engine 2</span><span>generator 1</span><span>curved_rail 6</span><span>train_stop 2</span><span>locomotive 5</span><span>cargo_wagon 7</span><span>rail_signal 6</span><span>chain_signal 2</span><span>coal_ore 450</span><span>iron_plate 450</span><span>steel 90</span><span>stone 90</span></div></div><div>Forbidden</div><div><div class="chips"><span>creative_spawn</span><span>editor_mode</span><span>rcon_unlisted</span><span>buffer_holdout</span><span>oil</span><span>logistic_bots</span><span>turrets</span><span>research</span><span>tier2_machines</span><span>splitters</span><span>circuits</span></div></div></div>
+      <p>Scripted reference team: <a href="fcb_experiments.html#green_science_outpost">Green-science outpost reference solution</a>.</p>
+      </div>
+      <div class="goal">
+      <h3 id="solar_night">Solar through the night</h3>
+      <div class="meta">team.solar_night.v4 · fcb/suites/T/solar_night.yaml</div>
+      <div class="kv"><div>Target</div><div>red science &gt;= 22/min</div><div>Horizon</div><div>20 rounds × 30 game-seconds, 20 build calls per agent per round</div><div>Scoring</div><div>unattended holdout 840 s, lowest rate over any 60 s span</div><div>World</div><div>64 × 64 tiles, world seed 0, empty start</div><div>Inventory</div><div>shared stash</div><div>Entity cap</div><div>&lt;= 400</div><div>Starting stash</div><div><div class="chips"><span>belt 180</span><span>underground_in 4</span><span>underground_out 4</span><span>inserter 30</span><span>long_inserter 11</span><span>power_pole 25</span><span>substation 4</span><span>solar_panel 25</span><span>accumulator 22</span><span>drill 4</span><span>burner_drill 2</span><span>furnace 6</span><span>assembler 9</span><span>chest 5</span><span>iron_plate 40</span></div></div><div>Forbidden</div><div><div class="chips"><span>creative_spawn</span><span>editor_mode</span><span>rcon_unlisted</span><span>buffer_holdout</span><span>oil</span><span>logistic_bots</span><span>turrets</span><span>trains</span><span>research</span><span>boiler</span><span>steam_engine</span><span>generator</span></div></div></div>
+      <p>Scripted reference team: <a href="fcb_experiments.html#solar_night">Solar through the night reference solution</a>.</p>
+      </div>
+      <div class="goal">
+      <h3 id="blue_science_v4">Blue science</h3>
+      <div class="meta">team.blue_science.v4 · fcb/suites/T/blue_science_v4.yaml</div>
+      <div class="kv"><div>Target</div><div>blue science &gt;= 5/min</div><div>Horizon</div><div>30 rounds × 60 game-seconds, 20 build calls per agent per round</div><div>Scoring</div><div>unattended holdout 480 s, lowest rate over any 120 s span</div><div>World</div><div>128 × 128 tiles, world seed 25, starts from <code>red_green</code> base</div><div>Inventory</div><div>shared stash</div><div>Entity cap</div><div>&lt;= 4000</div><div>Starting stash</div><div><div class="chips"><span>belt 210</span><span>underground_in 4</span><span>underground_out 4</span><span>inserter 39</span><span>long_inserter 16</span><span>assembler 18</span><span>chest 4</span><span>pipe 140</span><span>pipe_underground 20</span><span>offshore_pump 2</span><span>pumpjack 2</span><span>refinery 1</span><span>chemical_plant 5</span><span>substation 6</span><span>medium_pole 10</span></div></div><div>Forbidden</div><div><div class="chips"><span>creative_spawn</span><span>editor_mode</span><span>rcon_unlisted</span><span>buffer_holdout</span><span>logistic_bots</span><span>turrets</span><span>trains</span><span>research</span><span>tier2_machines</span><span>modules</span><span>circuits</span><span>splitters</span></div></div></div>
+      <p>Scripted reference team: <a href="fcb_experiments.html#blue_science_v4">Blue science reference solution</a>.</p>
+      </div>
+    </section>
+    <section class="rep" id="deep-chains">
+      <h2>Deep chains</h2>
+      <div class="goal">
+      <h3 id="rocket_part_v4">Rocket parts</h3>
+      <div class="meta">team.rocket_part.v4 · fcb/suites/T/rocket_part_v4.yaml</div>
+      <div class="kv"><div>Target</div><div>rocket part &gt;= 0.25/min</div><div>Horizon</div><div>30 rounds × 120 game-seconds, 20 build calls per agent per round</div><div>Scoring</div><div>unattended holdout 2400 s, lowest rate over any 1200 s span</div><div>World</div><div>128 × 128 tiles, world seed 25, starts from <code>blue_science</code> base</div><div>Inventory</div><div>shared stash</div><div>Entity cap</div><div>&lt;= 6000</div><div>Starting stash</div><div><div class="chips"><span>rocket_silo 1</span><span>belt 170</span><span>underground_in 4</span><span>underground_out 4</span><span>inserter 26</span><span>long_inserter 14</span><span>fast_inserter 4</span><span>assembler 6</span><span>assembler_2 6</span><span>chemical_plant 9</span><span>refinery 1</span><span>pumpjack 4</span><span>pipe 190</span><span>pipe_underground 26</span><span>offshore_pump 1</span><span>substation 8</span><span>medium_pole 10</span><span>chest 4</span><span>steel_chest 3</span></div></div><div>Forbidden</div><div><div class="chips"><span>creative_spawn</span><span>editor_mode</span><span>rcon_unlisted</span><span>buffer_holdout</span><span>logistic_bots</span><span>turrets</span><span>trains</span><span>research</span><span>modules</span><span>circuits</span><span>splitters</span></div></div></div>
+      <p>Scripted reference team: <a href="fcb_experiments.html#rocket_part_v4">Rocket parts reference solution</a>.</p>
+      </div>
+      <div class="goal">
+      <h3 id="rocket_launch_v4">Rocket launch</h3>
+      <div class="meta">team.rocket_launch.v4 · fcb/suites/T/rocket_launch_v4.yaml</div>
+      <div class="kv"><div>Target</div><div>1 × rocket launch within 1200 s (run clock)</div><div>Horizon</div><div>15 rounds × 120 game-seconds, 20 build calls per agent per round</div><div>Scoring</div><div>run clock 1200 s</div><div>World</div><div>128 × 128 tiles, world seed 25, starts from <code>late</code> base</div><div>Inventory</div><div>shared stash</div><div>Entity cap</div><div>&lt;= 6000</div><div>Starting stash</div><div><div class="chips"><span>rocket_silo 1</span><span>satellite 1</span><span>cargo_landing_pad 1</span><span>steel_chest 8</span><span>fast_inserter 6</span><span>long_inserter 8</span><span>inserter 12</span><span>substation 4</span><span>medium_pole 10</span></div></div><div>Forbidden</div><div><div class="chips"><span>creative_spawn</span><span>editor_mode</span><span>rcon_unlisted</span><span>buffer_holdout</span><span>logistic_bots</span><span>turrets</span><span>trains</span><span>research</span><span>modules</span><span>circuits</span><span>splitters</span></div></div></div>
+      <p>Scripted reference team: <a href="fcb_experiments.html#rocket_launch_v4">Rocket launch reference solution</a>.</p>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="foot"><a href="./">← Back to Factory Coordination Bench</a></div>
+</body>
+</html>

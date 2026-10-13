@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FCB Experiments</title>
+<style>
+:root{
+  --ink:#000;--ink2:#525252;--ink3:#8a8a8a;--rule:#e5e5e5;--rule2:#ededed;--panel:#fbfbfb;
+  --pass:#1a7f37;--fail:#cf222e;
+  --sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"Berkeley Mono","SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+h2[id],h3[id],h4[id],section[id]{scroll-margin-top:24px}
+body{background:#fff;color:var(--ink);font:400 14px/21px var(--sans)}
+a{color:inherit}
+code,.mono{font-family:var(--mono)}
+.mast{border-bottom:1px solid var(--rule)}
+.mast-in{max-width:1180px;margin:0 auto;padding:22px 16px 26px;display:flex;flex-direction:column;gap:14px}
+.eyebrow{font-size:12px;color:var(--ink2)}
+.eyebrow a{font-weight:500;color:var(--ink);text-decoration:none}
+.eyebrow a:hover{text-decoration:underline}
+.mast h1{font-size:44px;line-height:1.05;font-weight:400;letter-spacing:-.02em}
+.mast .sub{font-size:15px;line-height:22px;color:var(--ink2);max-width:720px}
+.mast .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.mast .links a,.mast .links span{font-size:12px;text-decoration:none;border:1px solid var(--rule);border-radius:4px;padding:5px 10px;color:var(--ink)}
+.mast .links a:hover{background:var(--panel)}
+.mast .links a.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.mast .links span.off{color:var(--ink3);background:var(--panel);cursor:not-allowed}
+.layout{max-width:1180px;margin:0 auto;padding:40px 16px 0;display:grid;grid-template-columns:176px minmax(0,820px);gap:0 64px}
+.toc{position:sticky;top:24px;align-self:start;font-size:14px;line-height:21px;max-height:calc(100vh - 48px);overflow:auto}
+.toc .lbl{font-size:11px;letter-spacing:.08em;color:var(--ink2);padding:4px 12px;margin-bottom:6px}
+.toc a{display:block;color:var(--ink2);text-decoration:none;padding:4px 12px}
+.toc a:hover{color:var(--ink)}
+.toc a.sub{font-size:12px;padding:2px 12px 2px 26px;color:var(--ink3)}
+.article{min-width:0;padding-bottom:40px}
+section.rep{padding:32px 0 8px;border-top:1px solid var(--rule2)}
+section.rep:first-child{padding-top:0;border-top:0}
+h2{font-size:24px;line-height:32px;font-weight:400;margin-bottom:12px}
+h3{font-size:16px;line-height:23px;font-weight:500;margin:24px 0 8px}
+h4{font-size:14px;line-height:21px;font-weight:500;margin:18px 0 6px}
+h5,h6{font-size:13px;font-weight:500;margin:14px 0 6px}
+p,li{font-size:15px;line-height:22px;color:var(--ink2)}
+p{margin-bottom:12px}
+ul,ol{margin:0 0 12px 22px}
+li{margin-bottom:4px}
+p b,p strong,li strong{color:var(--ink);font-weight:500}
+p a,li a,td a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--g3,#bdbdbd);text-underline-offset:2px}
+p code,li code,td code{font-size:.88em;background:var(--panel);border:1px solid var(--rule2);border-radius:3px;padding:0 3px}
+pre{font-family:var(--mono);font-size:12px;line-height:17px;background:var(--panel);border:1px solid var(--rule);padding:10px 12px;overflow:auto;margin:0 0 14px;max-height:520px}
+.tw{overflow-x:auto;margin:6px 0 16px}
+table{border-collapse:collapse;width:100%;font-size:12.5px;line-height:18px}
+th,td{text-align:left;vertical-align:top;padding:6px 10px 6px 0;border-bottom:1px solid var(--rule2);color:var(--ink2)}
+th{font-weight:500;color:var(--ink);border-bottom:1px solid var(--rule)}
+td:first-child{color:var(--ink)}
+.meta{font-family:var(--mono);font-size:12px;color:var(--ink3);margin:-6px 0 12px}
+.kv{display:grid;grid-template-columns:170px 1fr;gap:0;border-top:1px solid var(--rule2);margin:8px 0 16px}
+.kv div{padding:6px 10px 6px 0;border-bottom:1px solid var(--rule2);font-size:13px;line-height:19px;color:var(--ink2)}
+.kv div:nth-child(odd){color:var(--ink);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chips span{font-family:var(--mono);font-size:11px;border:1px solid var(--rule);border-radius:3px;padding:1px 6px;color:var(--ink2)}
+details{border:1px solid var(--rule);margin:8px 0 14px;background:#fff}
+details>summary{cursor:pointer;padding:8px 12px;font-size:13px;color:var(--ink);list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary:before{content:"+";font-family:var(--mono);color:var(--ink3);margin-right:8px}
+details[open]>summary:before{content:"−"}
+details>.body{padding:4px 14px 6px;border-top:1px solid var(--rule2)}
+.doc img{max-width:100%;height:auto;border:1px solid var(--rule2)}
+.goal{padding:36px 0 20px;border-top:1px solid var(--rule2)}
+.goal:first-of-type{padding-top:8px;border-top:0}
+.goal h3{margin-top:0}
+.foot{border-top:1px solid var(--rule);margin-top:24px;padding:24px 16px 40px;font-size:12px;color:var(--ink2);text-align:center}
+.foot a{color:var(--ink)}
+@media (max-width:960px){.layout{grid-template-columns:1fr}.toc{display:none}.mast h1{font-size:34px}}
+@media (max-width:640px){.kv{grid-template-columns:1fr}.kv div:nth-child(odd){border-bottom:0;padding-bottom:0}}
+</style>
+</head>
+<body>
+<!-- generated by tools/build_public_subpages.py; edit the sources, not this file -->
+<header class="mast">
+  <div class="mast-in">
+    <div class="eyebrow"><a href="./">Factory Coordination Bench</a></div>
+    <h1>Experiments</h1>
+    <div class="sub">How each goal was calibrated: the scripted reference team that proves it can be passed, what it measures, and the designs that fail.</div>
+    <div class="links">
+      <span class="off" title="The repository is not public yet">Repository</span>
+      <a href="fcb_goals.html">Production goals</a>
+      <a href="fcb_mechanics.html">Mechanics</a>
+      <a href="fcb_experiments.html" class=on>Experiments</a>
+    </div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="toc">
+    <div class="lbl">CONTENTS</div>
+    <a href="#how-the-goals-were-calibrated">How the goals were calibrated</a>
+    <a class=sub href="#what-a-reference-team-is">What a reference team is</a>
+    <a class=sub href="#what-is-measured">What is measured</a>
+    <a class=sub href="#how-a-round-is-scored">How a round is scored</a>
+    <a class=sub href="#the-difficulty-ladder">The difficulty ladder</a>
+    <a class=sub href="#durability-check">Durability check</a>
+    <a class=sub href="#counting-passes">Counting passes</a>
+    <a href="#reference-solutions">Reference solutions</a>
+    <a class=sub href="#red_science_12_v4">Red science</a>
+    <a class=sub href="#red_science_12_v4_defended">Red science · defended</a>
+    <a class=sub href="#bootstrap_red_science">Bootstrap red science</a>
+    <a class=sub href="#bootstrap_red_science_defended">Bootstrap red science · defended</a>
+    <a class=sub href="#green_science_outpost">Green-science outpost</a>
+    <a class=sub href="#solar_night">Solar through the night</a>
+    <a class=sub href="#blue_science_v4">Blue science</a>
+    <a class=sub href="#rocket_part_v4">Rocket parts</a>
+    <a class=sub href="#rocket_launch_v4">Rocket launch</a>
+  </nav>
+  <main class="article">
+    <section class="rep doc">
+<p>Each of the nine goals is calibrated against a scripted reference team: agents that follow a fixed build plan and make no model calls. The reference builds a known-good factory on the goal's own map, with the goal's own stash, rules and round budget. That proves the goal can be passed inside its horizon and sets the margins a model team is measured against.</p>
+<h2 id="how-the-goals-were-calibrated">How the goals were calibrated</h2>
+<h3 id="what-a-reference-team-is">What a reference team is</h3>
+<ul>
+<li>A fixed, hand-written build plan split across N agents. It uses the same tool calls a model team gets (<code>place</code>, <code>craft</code>, <code>take</code>, <code>insert</code>, <code>clear</code>, <code>set_recipe</code>, ...) and the same per-round call budget (K = 20 build calls per agent per round).</li>
+<li>It runs on the goal's fixed world seed, with no messages between agents.</li>
+<li>The same plan is run with four agents and with one agent. The four-agent run shows how fast a coordinated team can pass. The one-agent run shows that the horizon leaves room for a solo builder.</li>
+<li>A reference is an existence proof for that map and that horizon. It is not an optimality bound, and it is not a reference for other seeds.</li>
+</ul>
+<h3 id="what-is-measured">What is measured</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rounds to pass</td>
+<td>The first round whose forecast meets every target, for N = 4 and N = 1. Slack is the horizon minus this number.</td>
+</tr>
+<tr>
+<td>Held rate</td>
+<td>The minimum rolling rate over the scored window and the durability run-on, compared with the target.</td>
+</tr>
+<tr>
+<td>Margin</td>
+<td>(held rate − target) / target. For the rocket launch, the time left before the deadline.</td>
+</tr>
+<tr>
+<td>Replay</td>
+<td>Every reference run is replayed from its recorded operations. The replay has to reproduce the live verdict and rate vector exactly.</td>
+</tr>
+<tr>
+<td>Run-on</td>
+<td>The live final world is run on for 20+ game-minutes after the passing round, to check the factory keeps producing.</td>
+</tr>
+<tr>
+<td>Failing variants</td>
+<td>Undersized or flawed versions of the reference, run under the same rules. They show that the target actually separates good and bad factories.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="how-a-round-is-scored">How a round is scored</h3>
+<ul>
+<li>After each build round, the harness copies the world and forecasts on the copy. The live world is never touched by scoring.</li>
+<li>The copy first loses every item agents put in by hand with <code>insert</code>, including hand items that have since moved through inserters, belts, wagons or recipes. On goals that allow a kickstart, a burner may keep up to 5 hand-inserted fuel items: enough to kickstart it, never enough to run on.</li>
+<li>The copy warms up for 30 game seconds, then runs the holdout. The score is the minimum rolling rate over the evaluation span, taken in the second half of the holdout.</li>
+<li>A passing holdout must also hold its rate over a durability run-on (by default twice the holdout). A factory that passes the forecast window but runs dry afterwards fails.</li>
+<li>The rocket launch is a completion goal on the run clock. A forecast copy cannot launch, so its verdict comes from the live launch counter.</li>
+</ul>
+<h3 id="the-difficulty-ladder">The difficulty ladder</h3>
+<p>The goals form a ladder. Each rung adds one mechanic or one kind of pressure over the rung below it.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Rung</th>
+<th>Goal</th>
+<th>Target</th>
+<th>Horizon (rounds × game s)</th>
+<th>What it adds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Red science</td>
+<td>12 red/min</td>
+<td>20 × 30 s</td>
+<td>Full early-game rules: footprints, finite ore, steam power, build costs, real recipes, burner fuel</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Red science · defended</td>
+<td>12 red/min</td>
+<td>20 × 30 s</td>
+<td>Pollution and a biter nest</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Bootstrap red science</td>
+<td>6 red/min</td>
+<td>60 × 30 s</td>
+<td>No power and almost no materials at the start; research</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Bootstrap red science · defended</td>
+<td>6 red/min</td>
+<td>60 × 30 s</td>
+<td>The nest, during the burner phase</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Green-science outpost</td>
+<td>4 green/min</td>
+<td>44 × 30 s</td>
+<td>All ore 255 tiles from water; trains</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Solar through the night</td>
+<td>22 red/min</td>
+<td>20 × 30 s</td>
+<td>Solar and accumulators only; day/night cycle</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Blue science</td>
+<td>5 blue/min</td>
+<td>30 × 60 s</td>
+<td>Oil, fluids, cracking, on a pre-built red + green base</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Rocket parts</td>
+<td>0.25 parts/min</td>
+<td>30 × 120 s</td>
+<td>Processing units, low density structures, rocket fuel, the silo</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Rocket launch</td>
+<td>1 launch in 1200 s</td>
+<td>15 × 120 s</td>
+<td>Getting ~1000 of each component into a silo by a deadline</td>
+</tr>
+</tbody>
+</table></div>
+<p>Rungs 1–6 run on a 64×64 seed-0 map (the outpost on a 288×96 map). Rungs 7–9 run on a 128×128 seed-25 map with a pre-built base that belongs to nobody and costs nothing.</p>
+<h3 id="durability-check">Durability check</h3>
+<p>The forecast window is short (four minutes on red science). A factory can meet it on buffered stock and then decline. Two things guard against that:</p>
+<ul>
+<li><strong>The durability run-on is part of the verdict.</strong> It is scored, not just reported.</li>
+<li><strong>Longer windows were tested on the reference.</strong> Replayed to its first passing round, the red-science reference scores 18/min whether the holdout is 4, 10 or 20 minutes. Its unchanged factory then makes 18 packs in every one of the following 20 game-minutes.</li>
+</ul>
+<h3 id="counting-passes">Counting passes</h3>
+<ul>
+<li>The primary outcome is rounds to pass at the goal's horizon. A run that never passes counts as the full horizon.</li>
+<li>Pass fraction and the per-seed rounds-to-pass distribution are reported alongside it.</li>
+<li>A run is eligible only if it completed, had no model-service error or forbidden operation, and five replays reproduce its verdict and rates. Honest contract failures and agent-code exceptions are outcomes, not exclusions.</li>
+<li>Live production is reported next to every forecast verdict. A forecast pass with no live production is flagged.</li>
+</ul>
+<h2 id="reference-solutions">Reference solutions</h2>
+<h3 id="red_science_12_v4">Red science</h3>
+<p>Four agents build a steam-powered red-science factory across the seed-0 map: two pump → boiler → 2-engine chains, three burner coal drills, two iron and two copper furnaces, two gear assemblers feeding three red assemblers by direct insertion (18/min nominal). Each coal drill is kickstarted with 4 wood from a cleared tree, then fed for good by a burner inserter that picks coal off its own moving belt.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Target</td>
+<td>≥ 12 red/min</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 4</td>
+<td>5 of 20</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 1</td>
+<td>14 of 20</td>
+</tr>
+<tr>
+<td>Held rate (forecast / durability minimum)</td>
+<td>18.0 / 18.0 per min</td>
+</tr>
+<tr>
+<td>Margin</td>
+<td>+50%</td>
+</tr>
+<tr>
+<td>Build calls, N = 4</td>
+<td>275, 0 failed</td>
+</tr>
+<tr>
+<td>Hand stock removed from the passing probe</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Replays matching live</td>
+<td>5/5</td>
+</tr>
+<tr>
+<td>Live run-on</td>
+<td>18 packs every minute for 22 minutes</td>
+</tr>
+</tbody>
+</table></div>
+<p>Coal budget: each burner drill nets about 12.75 coal/min. Two drills give about 25/min to boilers that burn about 15/min at the factory's ~1 MW draw. The third gives about 13/min to furnaces that burn 5.4/min.</p>
+<p>What fails:</p>
+<ul>
+<li>Connecting the ~1 MW factory to the steam plant before either boiler holds coal. The boiler inserters crawl on the 40 kW trickle and the plant never comes up. The reference gates its last pole on "both boilers hold coal".</li>
+<li>A burner drill left to fuel itself from the coal under it. Burner drills burn only fuel put into them.</li>
+</ul>
+<h3 id="red_science_12_v4_defended">Red science · defended</h3>
+<p>The same red-science factory, plus a turret creep on a biter nest about 20 tiles away. One agent adds a <code>firearm_magazine</code> assembler fed from the iron belt and two gun turrets, loaded directly by inserters, 16.7–17.5 tiles from the spawner (inside the 18-tile range). The turrets kill the nest before its first group launches, so the factory never faces an attack.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Target</td>
+<td>≥ 12 red/min, 0 buildings lost</td>
+</tr>
+<tr>
+<td>Holdout</td>
+<td>1200 s, scored on minutes 10.5–20.5, after the first attack would land</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 4</td>
+<td>5 of 20</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 1</td>
+<td>15 of 20</td>
+</tr>
+<tr>
+<td>Held rate</td>
+<td>18.0 per min</td>
+</tr>
+<tr>
+<td>Margin</td>
+<td>+50%</td>
+</tr>
+<tr>
+<td>Build calls, N = 4</td>
+<td>283, 0 failed</td>
+</tr>
+<tr>
+<td>Defense</td>
+<td>2 turrets + 1 ammo assembler; nest killed in the forecast; 0 buildings lost</td>
+</tr>
+<tr>
+<td>Replays matching live</td>
+<td>5/5, including the forecast defense report</td>
+</tr>
+<tr>
+<td>Live run-on (30 game-minutes)</td>
+<td>0 attacks, 0 buildings lost, nest dead; 18 packs every minute in the scored window</td>
+</tr>
+</tbody>
+</table></div>
+<p>The ammo line takes iron first, so the live factory runs at 9–10/min for about 8 minutes after the passing round, then 18/min.</p>
+<p>What fails:</p>
+<ul>
+<li>The undefended red-science reference: FAIL in all 20 rounds. Forecasts for rounds 1–5 show 0, 29, 123, 260 and 260 buildings destroyed. The first group, about 58 small biters, arrives at about 12 game-minutes and razes the whole 260-building factory.</li>
+<li>A perimeter defense with too few turrets. Biters arrive as one group with no unit collision, and a 106-biter group does about 580 dps to the first wall it reaches. Holding it with zero losses needs roughly 10 or more fed turrets.</li>
+</ul>
+<h3 id="bootstrap_red_science">Bootstrap red science</h3>
+<p>The real Factorio opening. Nothing is powered and every building costs items from a small shared pool (50 iron, 30 copper, 3 burner drills, 1 furnace, 20 wood). The reference mines and smelts with burner machines, hand-crafts its buildings, builds steam power (1 boiler : 2 engines), brings copper from a patch about 40 tiles away, researches <code>automation</code>, and runs two red assemblers fed by one iron furnace. Every burner on the coal line is fed by a burner inserter off that line. Hand fuel is only ever a kickstart.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Target</td>
+<td>≥ 6 red/min</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 4</td>
+<td>52 of 60</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 1</td>
+<td>49 of 60</td>
+</tr>
+<tr>
+<td>Held rate (forecast / durability minimum)</td>
+<td>12.0 / 12.0 per min</td>
+</tr>
+<tr>
+<td>Margin</td>
+<td>+100%</td>
+</tr>
+<tr>
+<td>Hand stock removed from the passing probe</td>
+<td>1 coal (above the 5-item kickstart allowance)</td>
+</tr>
+<tr>
+<td>Replay matching live</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table></div>
+<p>Build order is gated: power (round ~20), first powered iron (~24), copper line (~33), assemblers, then the lab.</p>
+<p>One agent is about as fast as four. Iron income, not build calls, decides when each stage can start. A team gains by avoiding waste: over-crafting, starving the critical path, and letting burners go cold.</p>
+<p>What fails:</p>
+<ul>
+<li>Fuelling the furnace-side burner drills by hand each round instead of feeding them off the coal line. The hand coal is removed from the probe, and the forecast starves about 640 s into the durability run-on.</li>
+<li>Two burner drills instead of three. There is no stone, so no furnaces can be crafted, and a stone drill itself needs a furnace.</li>
+<li>A belt carrying ore on one lane and coal on the other into a furnace. Once a lane is full, items spill into the other lane, and the furnace fills with ore and starves of coal. The reference runs one item per belt.</li>
+</ul>
+<h3 id="bootstrap_red_science_defended">Bootstrap red science · defended</h3>
+<p>The bootstrap opening with the defended nest. The nest's first group gathers while the team is still in its burner phase, long before any ammo assembler could exist. The reference places two stashed turrets in round 0 at the same cells as the red variant, loads them with the 10 magazines of the 2.0 start kit (the spawner drops from ~354 to ~222 HP), and hand-crafts 4 more magazines from pool iron once steam power is up. Fourteen magazines kill the nest before its first group launches. No assembler, belt or power goes into the defense.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Target</td>
+<td>≥ 6 red/min, 0 buildings lost</td>
+</tr>
+<tr>
+<td>Holdout</td>
+<td>1200 s, scored on minutes 10.5–20.5</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 4</td>
+<td>52 of 60</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 1</td>
+<td>53 of 60</td>
+</tr>
+<tr>
+<td>Held rate (forecast / durability minimum)</td>
+<td>9.0 / 9.0 per min</td>
+</tr>
+<tr>
+<td>Margin</td>
+<td>+50%</td>
+</tr>
+<tr>
+<td>Hand stock removed from the passing probe</td>
+<td>1 coal, 1 magazine</td>
+</tr>
+<tr>
+<td>Defense</td>
+<td>2 turrets; nest killed live before its first group; 0 attacks, 0 buildings lost</td>
+</tr>
+<tr>
+<td>Replays matching live</td>
+<td>5/5, including the forecast defense report</td>
+</tr>
+<tr>
+<td>Live run-on (31 game-minutes)</td>
+<td>0 attacks, 0 buildings lost; 9–10 packs/min in the scored window</td>
+</tr>
+</tbody>
+</table></div>
+<p>What fails:</p>
+<ul>
+<li>The undefended bootstrap reference: no pass in 60 rounds. Every forecast from round 8 on shows an attack, and the live world loses 60 buildings to 2 attacks with the spawner still alive.</li>
+</ul>
+<h3 id="green_science_outpost">Green-science outpost</h3>
+<p>All the ore (iron, copper, coal) sits at the far west edge of a 288×96 map. The only water is about 255 tiles east. The reference runs one single-track line with a passing siding and one-way signals, and two double-headed trains (locomotive, iron wagon, copper wagon, coal wagon, locomotive) that shuttle ore to a base by the water, which smelts it and makes green science. Track and belts are hand-crafted from a fixed route budget. Locomotives are refuelled by burner inserters off the outpost's coal belt, so the trains never run on hand coal.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Target</td>
+<td>≥ 4 green/min</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 4</td>
+<td>16 of 44</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 1</td>
+<td>39 of 44</td>
+</tr>
+<tr>
+<td>Held rate (forecast / durability minimum)</td>
+<td>4.0 / 4.67 per min</td>
+</tr>
+<tr>
+<td>Hand stock removed from the passing probe</td>
+<td>380 coal (each locomotive keeps 5)</td>
+</tr>
+<tr>
+<td>Replay matching live</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table></div>
+<p>Route cost against the stashed budget:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Belts</th>
+<th>Rail tiles</th>
+<th>Iron plate</th>
+<th>Steel</th>
+<th>Stone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trains (reference)</td>
+<td>205</td>
+<td>306</td>
+<td>386</td>
+<td>77</td>
+<td>77</td>
+</tr>
+<tr>
+<td>Belt-only</td>
+<td>632</td>
+<td>0</td>
+<td>948</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Budget</td>
+<td></td>
+<td></td>
+<td>450</td>
+<td>90</td>
+<td>90</td>
+</tr>
+</tbody>
+</table></div>
+<p>Three ore types need two belt lines home (two lanes per belt) but only one rail line, so the budget buys the rail route and not the belt route.</p>
+<p>What fails:</p>
+<ul>
+<li>The belt-only route, with N = 4 and with N = 1. The team runs out of plate after about 300 belts and never passes. Steel and stone go unused.</li>
+<li>A belt line whose turn is a curve with nothing feeding it from behind. The curve keeps iron on the lane copper side-loads onto, the two ores share one lane, and the base's filtered unloaders starve.</li>
+<li>Feeding the boiler from the same coal belt as the furnaces. The boiler's belt soaks up every coal until it fills and the iron furnaces starve.</li>
+</ul>
+<h3 id="solar_night">Solar through the night</h3>
+<p>The red-science factory scaled to 24/min (3 gear and 4 red assemblers, three iron furnaces) on solar power alone. Steam is forbidden. The array is 21 solar panels and 18 accumulators on three substations, sized for the factory's real load with about 20% margin on panels and storage. The holdout covers two full day/night cycles, so the scored minute always includes the 42 seconds of full dark.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Target</td>
+<td>≥ 22 red/min</td>
+</tr>
+<tr>
+<td>Holdout</td>
+<td>840 s (two 420 s days)</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 4</td>
+<td>5 of 20</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 1</td>
+<td>15 of 20</td>
+</tr>
+<tr>
+<td>Held rate</td>
+<td>24.0 per min</td>
+</tr>
+<tr>
+<td>Margin</td>
+<td>+9%</td>
+</tr>
+<tr>
+<td>Factory load</td>
+<td>704 kW average (361–938 kW)</td>
+</tr>
+<tr>
+<td>Array</td>
+<td>21 panels : 18 accumulators (90 MJ)</td>
+</tr>
+<tr>
+<td>Lowest night charge</td>
+<td>25.5 MJ (28%)</td>
+</tr>
+<tr>
+<td>Power satisfaction</td>
+<td>1.0 at every sample, day and night</td>
+</tr>
+<tr>
+<td>Live run-on (23 game-minutes)</td>
+<td>24 packs every minute from minute 3</td>
+</tr>
+</tbody>
+</table></div>
+<p>Sizing sweep (N = 4, same factory, 20-round horizon):</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Panels : accumulators</th>
+<th>Result</th>
+<th>Min satisfaction</th>
+<th>Min rolling rate in run-on</th>
+<th>Night low (MJ)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>21 : 18 (reference)</td>
+<td>PASS r5</td>
+<td>1.00</td>
+<td>24</td>
+<td>25.5</td>
+</tr>
+<tr>
+<td>19 : 16</td>
+<td>PASS r5</td>
+<td>1.00</td>
+<td>24</td>
+<td>11.9</td>
+</tr>
+<tr>
+<td>18 : 15 (wiki ratio at 0.70 MW)</td>
+<td>PASS r5</td>
+<td>1.00</td>
+<td>24</td>
+<td>4.7</td>
+</tr>
+<tr>
+<td>21 : 14</td>
+<td>PASS r5</td>
+<td>1.00</td>
+<td>24</td>
+<td>5.5</td>
+</tr>
+<tr>
+<td>17 : 14</td>
+<td>PASS r5, browns out</td>
+<td>0.54</td>
+<td>21</td>
+<td>0</td>
+</tr>
+<tr>
+<td>20 : 12</td>
+<td>FAIL</td>
+<td>0.39</td>
+<td>20</td>
+<td>0</td>
+</tr>
+<tr>
+<td>21 : 10</td>
+<td>FAIL</td>
+<td>0.09</td>
+<td>14</td>
+<td>0</td>
+</tr>
+<tr>
+<td>16 : 20</td>
+<td>FAIL</td>
+<td>0.17</td>
+<td>13</td>
+<td>0</td>
+</tr>
+<tr>
+<td>15 : 18</td>
+<td>FAIL</td>
+<td>0.00</td>
+<td>4</td>
+<td>0</td>
+</tr>
+<tr>
+<td>14 : 20</td>
+<td>FAIL</td>
+<td>0.00</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table></div>
+<p>What fails:</p>
+<ul>
+<li>About 20% short on storage (20 : 12) or half the storage (21 : 10, 20 : 10).</li>
+<li>Too few panels for the day average (14–16 panels), whatever the storage. Fifteen panels average 630 kW, below the load.</li>
+<li>A marginal array (17 : 14, about 5% short on both) can pass one probe but browns out in the run-on, at 21/min.</li>
+</ul>
+<h3 id="blue_science_v4">Blue science</h3>
+<p>A pre-built base already makes red and green science and hands off iron, steel, copper, circuits and coal on dead-end belts at the edge of a free site. The reference adds a full oil chain and a blue-science line: a pumpjack, an advanced-oil-processing refinery, heavy and light cracking, sulfur and plastic plants, gears → engines, cable → advanced circuits, and three blue-science assemblers. It is 365 steps (347 placements, 18 recipes) and hand-inserts nothing.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Target</td>
+<td>≥ 5 blue/min</td>
+</tr>
+<tr>
+<td>Holdout / evaluation span</td>
+<td>480 s / 120 s</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 4</td>
+<td>5 of 30</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 1</td>
+<td>19 of 30</td>
+</tr>
+<tr>
+<td>Held rate (forecast / durability minimum)</td>
+<td>7.0 / 7.0 per min</td>
+</tr>
+<tr>
+<td>Margin</td>
+<td>+40%</td>
+</tr>
+<tr>
+<td>Hand stock removed from the passing probe</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Power</td>
+<td>316 panels + 210 accumulators in the base; satisfaction 1.0 throughout</td>
+</tr>
+</tbody>
+</table></div>
+<p>What fails:</p>
+<ul>
+<li>An advanced-circuit assembler that drops its output at a belt's dead end, out of reach of the blue assemblers. Advanced-circuit supply falls short. Producers must drop upstream of every consumer.</li>
+<li>A fourth blue-science assembler on the shared belt. A shared belt only feeds every consumer once supply exceeds demand and it backs up. With four assemblers it never does, and output falls below what three well-fed assemblers make.</li>
+</ul>
+<h3 id="rocket_part_v4">Rocket parts</h3>
+<p>On the blue-science base plus a rocket bus (circuits, copper, iron, steel and coal hand-offs) and four free oil wells, the reference builds the whole rocket-part chain into a stashed silo: pumpjacks → refinery → cracking, plastic, sulfur → sulfuric acid, cable → advanced circuits → processing units, low density structures, solid fuel → rocket fuel. Byproduct sinks keep the oil chain from deadlocking: a light-oil cracking plant, solid fuel from surplus petroleum gas into a chest, and a plastic overflow chest at the end of the plastic belt. Output is bound by the ~80 circuits/min the base hands off.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Target</td>
+<td>≥ 0.25 parts/min</td>
+</tr>
+<tr>
+<td>Holdout / evaluation span</td>
+<td>2400 s / 1200 s</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 4</td>
+<td>5 of 30</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 1</td>
+<td>20 of 30</td>
+</tr>
+<tr>
+<td>Held rate (forecast / durability minimum)</td>
+<td>0.35 / 0.35 per min</td>
+</tr>
+<tr>
+<td>Margin</td>
+<td>+40%</td>
+</tr>
+<tr>
+<td>Live check (N = 4, 40 game-minutes)</td>
+<td>14 parts; worst rolling 20-minute window 0.30/min</td>
+</tr>
+<tr>
+<td>Whole plan simulated for 120 minutes</td>
+<td>0.2–0.4 parts/min in every 10 minutes, no collapse</td>
+</tr>
+<tr>
+<td>Build</td>
+<td>400 steps</td>
+</tr>
+</tbody>
+</table></div>
+<p>What fails:</p>
+<ul>
+<li>One refinery feeding both the plastic and the rocket-fuel chains with no byproduct sink. Whenever the silo waits on one ingredient, the other chain backs up, the refinery's output fills, and gas or light oil stops. This design forecast-passes the 40-minute holdout at 0.35/min but makes 0.00/min over the run-on: the chain dies 40–70 game-minutes in.</li>
+</ul>
+<h3 id="rocket_launch_v4">Rocket launch</h3>
+<p>A pre-built late base runs the full rocket-part factory but has no silo. Its feed inserters fill steel chests on the silo plot, stocked with about 1600 processing units, 2500 low density structures and 1260 rocket fuel. The team must clear the plot (removing a chest refunds its contents to the shared pool), place the silo and a cargo landing pad, get the components and the stashed satellite into the silo through chest-and-inserter feed stations and hand inserts, and launch within 1200 game-seconds of round 1.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Target</td>
+<td>1 launch within 1200 s on the run clock</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 4</td>
+<td>5 of 15</td>
+</tr>
+<tr>
+<td>Rounds to pass, N = 1</td>
+<td>5 of 15</td>
+</tr>
+<tr>
+<td>Launch completed at</td>
+<td>500 s (N = 4 and N = 1)</td>
+</tr>
+<tr>
+<td>Margin</td>
+<td>700 s before the deadline</td>
+</tr>
+<tr>
+<td>Build calls</td>
+<td>36, 0 failed</td>
+</tr>
+</tbody>
+</table></div>
+<p>One agent is no slower than four. The job is short and sequential: stock reaches the pool only as the plot is cleared, and most of the time after that is silo time (100 parts at 3 s each, then the rocket rising).</p>
+<p>What fails:</p>
+<ul>
+<li>No failing variant is reported for this goal. Two rules from the game decide whether a launch can happen at all: a rocket launches only while a cargo landing pad stands on the map, and a rocket cannot launch without a payload.</li>
+</ul>
+    </section>
+  </main>
+</div>
+<div class="foot"><a href="./">← Back to Factory Coordination Bench</a></div>
+</body>
+</html>

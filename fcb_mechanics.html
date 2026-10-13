@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FCB Mechanics</title>
+<style>
+:root{
+  --ink:#000;--ink2:#525252;--ink3:#8a8a8a;--rule:#e5e5e5;--rule2:#ededed;--panel:#fbfbfb;
+  --pass:#1a7f37;--fail:#cf222e;
+  --sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"Berkeley Mono","SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+h2[id],h3[id],h4[id],section[id]{scroll-margin-top:24px}
+body{background:#fff;color:var(--ink);font:400 14px/21px var(--sans)}
+a{color:inherit}
+code,.mono{font-family:var(--mono)}
+.mast{border-bottom:1px solid var(--rule)}
+.mast-in{max-width:1180px;margin:0 auto;padding:22px 16px 26px;display:flex;flex-direction:column;gap:14px}
+.eyebrow{font-size:12px;color:var(--ink2)}
+.eyebrow a{font-weight:500;color:var(--ink);text-decoration:none}
+.eyebrow a:hover{text-decoration:underline}
+.mast h1{font-size:44px;line-height:1.05;font-weight:400;letter-spacing:-.02em}
+.mast .sub{font-size:15px;line-height:22px;color:var(--ink2);max-width:720px}
+.mast .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.mast .links a,.mast .links span{font-size:12px;text-decoration:none;border:1px solid var(--rule);border-radius:4px;padding:5px 10px;color:var(--ink)}
+.mast .links a:hover{background:var(--panel)}
+.mast .links a.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.mast .links span.off{color:var(--ink3);background:var(--panel);cursor:not-allowed}
+.layout{max-width:1180px;margin:0 auto;padding:40px 16px 0;display:grid;grid-template-columns:176px minmax(0,820px);gap:0 64px}
+.toc{position:sticky;top:24px;align-self:start;font-size:14px;line-height:21px;max-height:calc(100vh - 48px);overflow:auto}
+.toc .lbl{font-size:11px;letter-spacing:.08em;color:var(--ink2);padding:4px 12px;margin-bottom:6px}
+.toc a{display:block;color:var(--ink2);text-decoration:none;padding:4px 12px}
+.toc a:hover{color:var(--ink)}
+.toc a.sub{font-size:12px;padding:2px 12px 2px 26px;color:var(--ink3)}
+.article{min-width:0;padding-bottom:40px}
+section.rep{padding:32px 0 8px;border-top:1px solid var(--rule2)}
+section.rep:first-child{padding-top:0;border-top:0}
+h2{font-size:24px;line-height:32px;font-weight:400;margin-bottom:12px}
+h3{font-size:16px;line-height:23px;font-weight:500;margin:24px 0 8px}
+h4{font-size:14px;line-height:21px;font-weight:500;margin:18px 0 6px}
+h5,h6{font-size:13px;font-weight:500;margin:14px 0 6px}
+p,li{font-size:15px;line-height:22px;color:var(--ink2)}
+p{margin-bottom:12px}
+ul,ol{margin:0 0 12px 22px}
+li{margin-bottom:4px}
+p b,p strong,li strong{color:var(--ink);font-weight:500}
+p a,li a,td a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--g3,#bdbdbd);text-underline-offset:2px}
+p code,li code,td code{font-size:.88em;background:var(--panel);border:1px solid var(--rule2);border-radius:3px;padding:0 3px}
+pre{font-family:var(--mono);font-size:12px;line-height:17px;background:var(--panel);border:1px solid var(--rule);padding:10px 12px;overflow:auto;margin:0 0 14px;max-height:520px}
+.tw{overflow-x:auto;margin:6px 0 16px}
+table{border-collapse:collapse;width:100%;font-size:12.5px;line-height:18px}
+th,td{text-align:left;vertical-align:top;padding:6px 10px 6px 0;border-bottom:1px solid var(--rule2);color:var(--ink2)}
+th{font-weight:500;color:var(--ink);border-bottom:1px solid var(--rule)}
+td:first-child{color:var(--ink)}
+.meta{font-family:var(--mono);font-size:12px;color:var(--ink3);margin:-6px 0 12px}
+.kv{display:grid;grid-template-columns:170px 1fr;gap:0;border-top:1px solid var(--rule2);margin:8px 0 16px}
+.kv div{padding:6px 10px 6px 0;border-bottom:1px solid var(--rule2);font-size:13px;line-height:19px;color:var(--ink2)}
+.kv div:nth-child(odd){color:var(--ink);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chips span{font-family:var(--mono);font-size:11px;border:1px solid var(--rule);border-radius:3px;padding:1px 6px;color:var(--ink2)}
+details{border:1px solid var(--rule);margin:8px 0 14px;background:#fff}
+details>summary{cursor:pointer;padding:8px 12px;font-size:13px;color:var(--ink);list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary:before{content:"+";font-family:var(--mono);color:var(--ink3);margin-right:8px}
+details[open]>summary:before{content:"−"}
+details>.body{padding:4px 14px 6px;border-top:1px solid var(--rule2)}
+.doc img{max-width:100%;height:auto;border:1px solid var(--rule2)}
+.goal{padding:36px 0 20px;border-top:1px solid var(--rule2)}
+.goal:first-of-type{padding-top:8px;border-top:0}
+.goal h3{margin-top:0}
+.foot{border-top:1px solid var(--rule);margin-top:24px;padding:24px 16px 40px;font-size:12px;color:var(--ink2);text-align:center}
+.foot a{color:var(--ink)}
+@media (max-width:960px){.layout{grid-template-columns:1fr}.toc{display:none}.mast h1{font-size:34px}}
+@media (max-width:640px){.kv{grid-template-columns:1fr}.kv div:nth-child(odd){border-bottom:0;padding-bottom:0}}
+</style>
+</head>
+<body>
+<!-- generated by tools/build_public_subpages.py; edit the sources, not this file -->
+<header class="mast">
+  <div class="mast-in">
+    <div class="eyebrow"><a href="./">Factory Coordination Bench</a></div>
+    <h1>Mechanics</h1>
+    <div class="sub">The rules of the simulator as they apply to the nine scored goals, measured against Factorio 2.0.</div>
+    <div class="links">
+      <span class="off" title="The repository is not public yet">Repository</span>
+      <a href="fcb_goals.html">Production goals</a>
+      <a href="fcb_mechanics.html" class=on>Mechanics</a>
+      <a href="fcb_experiments.html">Experiments</a>
+    </div>
+  </div>
+</header>
+<div class="layout">
+  <nav class="toc">
+    <div class="lbl">CONTENTS</div>
+    <a href="#how-a-run-works">How a run works</a>
+    <a href="#how-a-goal-is-scored">How a goal is scored</a>
+    <a href="#the-world">The world</a>
+    <a href="#production">Production</a>
+    <a href="#power">Power</a>
+    <a href="#fluids-and-oil">Fluids and oil</a>
+    <a href="#late-game-and-the-rocket">Late game and the rocket</a>
+    <a href="#enemies-and-defence">Enemies and defence</a>
+    <a href="#where-the-simulator-differs-from-factorio">Where the simulator differs from Factorio</a>
+  </nav>
+  <main class="article">
+    <section class="rep doc">
+<p>FCB runs on a deterministic simulator whose rules are measured against
+Factorio 2.0: recipes, crafting times, machine speeds, belt and inserter rates,
+power, fluids and enemies use the game's own numbers. This page describes the
+rules that apply to the nine scored goals, and lists where the simulator still
+differs from the game.</p>
+<h2 id="how-a-run-works">How a run works</h2>
+<ul>
+<li><strong>Rounds.</strong> All agents see the same snapshot of the world at the start of a
+  round and each writes one Python program at the same time. The programs then
+  run one after another in a seeded random order, so an agent's view can be
+  stale by the time its program runs.</li>
+<li><strong>Build calls.</strong> Each agent may make 20 build calls per round. Every call
+  that changes the world counts, including calls the world refuses. Reads
+  (listing entities, inspecting an area, checking power) are free up to a cap
+  of 1,000 calls per program, and a program may run for at most 60 seconds.</li>
+<li><strong>Time.</strong> Agents cannot advance time. After every program has run, the world
+  advances a fixed number of game-seconds: 30 for most goals, 60 for blue
+  science and 120 for the rocket goals.</li>
+<li><strong>Messages.</strong> A message an agent sends during a round reaches its teammates
+  at the start of the next round, whatever order the programs ran in.</li>
+<li><strong>Shared supplies.</strong> The team draws every building and item from one shared
+  stash. Placing a building consumes its item; removing it refunds the item
+  and its contents to the stash.</li>
+<li><strong>Replay.</strong> Every build call is logged with its round, slot, agent and
+  sequence number, so any run can be replayed exactly without the model.</li>
+</ul>
+<h2 id="how-a-goal-is-scored">How a goal is scored</h2>
+<p>After every round, a probe copies the world and runs the copy unattended. Agents
+cannot act on the copy.</p>
+<ul>
+<li><strong>Rate goals</strong> (eight of the nine). The copy warms up for 30 seconds and then
+  runs through the goal's holdout. The score is the <em>lowest</em> rolling production
+  rate over the second half of the holdout, measured over the goal's span
+  (60–1,200 seconds depending on the goal). A copy that passes keeps running
+  for twice the holdout and must hold the rate the whole time.</li>
+<li><strong>No stockpiles.</strong> Anything an agent put into the factory by hand, and
+  anything made from it, is removed from the copy first, so only a
+  self-sustaining factory can pass. Burner fuel inserted by hand to start a
+  machine is the one exception on goals that allow it.</li>
+<li><strong>Rocket launch</strong> is a completion goal: one rocket must launch within 1,200
+  game-seconds of the start of round 1.</li>
+<li><strong>Measurable targets.</strong> Every goal's target implies at least five items per
+  scoring span, so a single lucky craft cannot pass a factory running below
+  target.</li>
+</ul>
+<h2 id="the-world">The world</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Map</td>
+<td>64 × 64 tiles for the red-science and solar goals, 128 × 128 for blue science and the rocket goals, 288 tiles wide for the green-science outpost</td>
+</tr>
+<tr>
+<td>Footprints</td>
+<td>Buildings have their real sizes: electric drill, assembler and lab 3 × 3, furnace and burner drill 2 × 2, refinery 5 × 5, rocket silo 9 × 9. Every covered tile must be free</td>
+</tr>
+<tr>
+<td>Ore</td>
+<td>Finite. Starting maps hold a few hundred ore per tile; the late-game maps hold 600,000 per patch</td>
+</tr>
+<tr>
+<td>Terrain</td>
+<td>Water and cliffs block all building. Trees and rocks block building until cleared; clearing costs one build call and yields wood, stone or coal</td>
+</tr>
+<tr>
+<td>Starting bases</td>
+<td>Blue science, rocket parts and rocket launch start from a running factory built by a script before round 1. Base buildings belong to no agent, and nothing the base produced before round 1 counts toward the goal</td>
+</tr>
+<tr>
+<td>Large maps</td>
+<td>Maps over 96 × 96 tiles are shown as a summary (entity counts, ore patches, power) plus an on-demand area view, instead of a full map</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="production">Production</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Mechanic</th>
+<th>Simulator</th>
+<th>Factorio 2.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Electric drill</td>
+<td>3 × 3, mines a 5 × 5 area, 0.5 ore/s, drops in front of its facing edge</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Burner drill</td>
+<td>2 × 2, 0.25 ore/s, burns only fuel put into it; it never feeds itself from coal it stands on</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Stone furnace</td>
+<td>2 × 2, about 18.75 plates/min, needs coal delivered like any other input</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Assembler 1 / 2</td>
+<td>crafting speed 0.5 / 0.75; only assembler 2 takes fluid recipes</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Hand crafting</td>
+<td>each agent has its own crafting queue at speed 1; smelting, fluid, chemistry and rocket recipes cannot be hand-crafted</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Machine output</td>
+<td>a machine stops when 4 finished items wait in its output (more for late-game recipes that make 3 at a time)</td>
+<td>limited by stack size</td>
+</tr>
+<tr>
+<td>Belts</td>
+<td>yellow 15 items/s, fast 30, express 45, over two lanes; side-loading fills only the near lane</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Underground belts</td>
+<td>reach 4 / 6 / 8 tiles by tier; a nearer new entrance takes over the pair</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Inserters</td>
+<td>burner 0.79, normal 0.86, long-handed 1.25, fast 2.5 items/s chest to chest; take from belts, chests and machine outputs, never from drills; drop onto a belt's far lane</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Chests</td>
+<td>wooden 16 slots, iron 32, steel 48; real stack sizes</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Research</td>
+<td>a powered lab consumes one of each required pack per unit; techs unlock their recipes and buildings</td>
+<td>same costs; the player picks the active research</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="power">Power</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Mechanic</th>
+<th>Simulator</th>
+<th>Factorio 2.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Steam</td>
+<td>an offshore pump supplies 1,200 water/s; a boiler makes 60 steam/s and burns 1.8 MW of fuel; a steam engine turns 30 steam/s into 900 kW, so one boiler feeds two engines</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Shortfall</td>
+<td>when demand exceeds supply, every consumer on that network slows in proportion</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Demand</td>
+<td>real working draw plus idle drain (assembler 77.5 kW working, 2.5 kW idle; inserters draw only while swinging)</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Poles</td>
+<td>small pole 5 × 5 supply, 7.5 tile reach; medium 7 × 7, 9; big pole reach 32; substation 18 × 18 supply, 18 reach</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Day and night</td>
+<td>a 7-minute day: full light for half of it, dark for about 42 seconds, with linear dusk and dawn</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Solar</td>
+<td>panel 60 kW peak, 42 kW averaged over a day; accumulator 5 MJ, 300 kW in and out; 25 panels : 21 accumulators carry about 1 MW through the night</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Priority</td>
+<td>solar first, then steam, then accumulators; accumulators charge only from surplus</td>
+<td>same</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="fluids-and-oil">Fluids and oil</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Mechanic</th>
+<th>Simulator</th>
+<th>Factorio 2.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pipes</td>
+<td>one fluid per connected segment; joining two fluids is refused; pipe 100, tank 25,000</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Flow</td>
+<td>no loss over distance; flow into and out of a segment slows as it fills or empties; a segment over 320 tiles needs a pump</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Underground pipe</td>
+<td>pairs with a facing end up to 10 tiles away</td>
+<td>same reach</td>
+</tr>
+<tr>
+<td>Pumpjack</td>
+<td>3 × 3 on an oil field; yield falls 1% per 300 cycles to a floor</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Refinery</td>
+<td>5 × 5; advanced processing: 100 crude + 50 water → 25 heavy + 45 light + 55 gas in 5 s</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Chemical plant</td>
+<td>plastic, sulfur, sulfuric acid, batteries, solid fuel, lubricant and cracking at real recipes</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Fluid connections</td>
+<td>only at each machine's real connection points, rotating with the machine</td>
+<td>same</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="late-game-and-the-rocket">Late game and the rocket</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Mechanic</th>
+<th>Simulator</th>
+<th>Factorio 2.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Blue science</td>
+<td>2 engines + 3 advanced circuits + 1 sulfur → 2 in 24 s</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Rocket parts</td>
+<td>10 processing units + 10 low-density structures + 10 rocket fuel each, built inside the silo; 100 per rocket</td>
+<td>same (base game)</td>
+</tr>
+<tr>
+<td>Launch</td>
+<td>needs a satellite as payload and a cargo landing pad somewhere on the map; the silo prepares, launches and resets with the game's phase times</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Silo power</td>
+<td>250 kW while building parts, plus about 4 MW during the launch sequence</td>
+<td>same</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="enemies-and-defence">Enemies and defence</h2>
+<p>Two goals (the defended red-science goals) place a biter spawner on the map.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Mechanic</th>
+<th>Simulator</th>
+<th>Factorio 2.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pollution</td>
+<td>machines emit at the game's rates; pollution spreads between 32 × 32 chunks and is absorbed by land, water and trees</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Attacks</td>
+<td>spawners absorb pollution and send attack groups when it pays for their units</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Evolution</td>
+<td>rises with time, pollution and destroyed spawners</td>
+<td>same formula</td>
+</tr>
+<tr>
+<td>Units and buildings</td>
+<td>real hit points, damage, speeds and resistances</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Turrets and walls</td>
+<td>gun turret range 18 with magazines; laser turret range 24 on power; walls 350 HP</td>
+<td>same (1 × 1 turrets)</td>
+</tr>
+<tr>
+<td>Repair</td>
+<td>one build call and a repair pack restore up to 600 HP</td>
+<td>same</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="where-the-simulator-differs-from-factorio">Where the simulator differs from Factorio</h2>
+<p>These differences are small and mostly make the world slightly easier. None of
+them removes what FCB measures: shared space, shared ore, shared power and
+hand-offs between producers and consumers.</p>
+<ul>
+<li><strong>Machine output buffers</strong> are tighter: a machine stalls with 4 finished
+  items waiting (more for late-game recipes that make several at once).</li>
+<li><strong>Belts</strong> move items in fixed 8-tick steps rather than continuous spacing;
+  throughput is exact.</li>
+<li><strong>Research</strong> runs as a first-in, first-out queue.</li>
+<li><strong>Fluids</strong>: pipes connect on all four sides; contents of a removed
+  pipe or machine are lost; a pipe-to-ground pair farther than its reach is
+  refused rather than placed unconnected.</li>
+<li><strong>Power</strong> is recomputed every 30 ticks rather than every tick.</li>
+<li><strong>Pollution</strong> is absorbed by every land tile at the grass rate (the map has
+  no sand), and machines at reduced power still emit at full rate.</li>
+<li><strong>Enemies</strong> use simplified pathing, launch one group at a time without
+  waiting for stragglers, build expansions instantly and follow an
+  approximate spawner health curve. Turrets are 1 × 1, and there is no
+  flamethrower turret.</li>
+<li><strong>Rocket launch</strong> delivers its cargo about 10 seconds earlier than the game,
+  and items that do not fit in the landing pad are counted rather than dropped.</li>
+<li><strong>Recipes the simulator lacks</strong> are mapped to the closest modelled item, except
+  on late-game goals, which use the real items.</li>
+</ul>
+    </section>
+  </main>
+</div>
+<div class="foot"><a href="./">← Back to Factory Coordination Bench</a></div>
+</body>
+</html>
