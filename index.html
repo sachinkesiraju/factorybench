@@ -194,6 +194,8 @@ table.t{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(
 table.t th{font-family:var(--mono);font-size:10px;font-weight:400;color:var(--ink2);text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);background:var(--panel)}
 table.t td{padding:9px 10px;border-bottom:1px solid var(--rule2);vertical-align:top;line-height:18px}
 table.t tr:last-child td{border-bottom:0}
+table.t.sig{margin:8px 0 18px}
+table.t.sig td.m{text-align:right}
 table.t td.m{font-family:var(--mono);font-size:11.5px}
 table.t td.ok{color:var(--pass);font-weight:600}
 table.t td.fail{color:var(--fail);font-weight:600}
@@ -354,12 +356,12 @@ print(produced("rocket_part"))</pre></div>
             <div class="kv">
               <span>probe</span><span>min rolling 1200 s, 2nd half</span>
               <span>produced()</span><span>machine output only</span>
-              <span>ops</span><span>254 · 60 failed</span>
-              <span>collisions</span><span>38 · stale 55</span>
+              <span>ops</span><span>559 · 218 failed</span>
+              <span>collisions</span><span>38 · stale 47</span>
               <span>replay</span><span>same verdict</span>
             </div>
           </div>
-          <div class="sf">Binary PASS / FAIL per contract × seed · deterministic replay</div>
+          <div class="sf">Binary PASS / FAIL per contract × seed · deterministic replay · shown: DeepSeek, four agents, rocket parts</div>
         </div>
       </div>
 
@@ -565,7 +567,7 @@ print(produced("rocket_part"))</pre></div>
           </tbody>
         </table>
       </div>
-      <p class="fnote">Pooled across nine completed goals per row; Opus blue science uses an earlier build. Participation is a share of rounds; friction is a share of build calls. These describe behavior, not a teamwork score. Four-agent teams have more opportunities for shared participation.</p>
+      <p class="fnote">Pooled across nine completed goals per row; Opus blue science uses an earlier build. Participation is a share of rounds; friction is a share of build calls. These describe behavior, not a teamwork score. Larger teams have more opportunities for shared participation.</p>
     </section>
 
     <!-- 04 -->
@@ -796,7 +798,7 @@ print(produced("rocket_part"))</pre></div>
       <p class="fnote">All runs use frozen v1 except Opus blue science and Astra, which predates the rocket-silo and fluid fixes. Rocket-launch passes are forecasts within the 1,200-second deadline, except single Opus and Sonnet agents, which launched live. Costs use recorded tokens: Sonnet and Haiku at the CLI's fallback rate, Sol and Luna repriced at published rates. Replay audits, by team size: Opus <span class="nolink" title="Run files will be linked when the repository is public">1</span> · <span class="nolink" title="Run files will be linked when the repository is public">2</span> · <span class="nolink" title="Run files will be linked when the repository is public">4</span> · <span class="nolink" title="Run files will be linked when the repository is public">8</span>; Sonnet <span class="nolink" title="Run files will be linked when the repository is public">1</span> · <span class="nolink" title="Run files will be linked when the repository is public">2</span> · <span class="nolink" title="Run files will be linked when the repository is public">4</span> · <span class="nolink" title="Run files will be linked when the repository is public">8</span>; Haiku <span class="nolink" title="Run files will be linked when the repository is public">1</span> · <span class="nolink" title="Run files will be linked when the repository is public">2</span> · <span class="nolink" title="Run files will be linked when the repository is public">4</span> · <span class="nolink" title="Run files will be linked when the repository is public">8</span>; Sol <span class="nolink" title="Run files will be linked when the repository is public">1</span> · <span class="nolink" title="Run files will be linked when the repository is public">2</span> · <span class="nolink" title="Run files will be linked when the repository is public">4</span> · <span class="nolink" title="Run files will be linked when the repository is public">8</span>; Luna <span class="nolink" title="Run files will be linked when the repository is public">1</span> · <span class="nolink" title="Run files will be linked when the repository is public">2</span> · <span class="nolink" title="Run files will be linked when the repository is public">4</span> · <span class="nolink" title="Run files will be linked when the repository is public">8</span>; DeepSeek <span class="nolink" title="Run files will be linked when the repository is public">4</span>.</p>
 
       <h3 id="s4a">Opus succeeds across all three task families<sup class="fn"><a href="#f3">3</a></sup></h3>
-      <p class="cap">Two Opus agents miss only defended bootstrap. One Opus agent also misses defended red science and rocket parts, four miss defended bootstrap, solar night and rocket parts, and eight pass only the two red-science goals, blue science and rocket launch. Four Sol agents pass six, missing blue science and both defended goals; eight also pass six, trading rocket parts for blue science; two pass only red science, bootstrap and rocket launch. Sonnet passes at most two goals at any team size, Haiku and DeepSeek one, and Luna none.</p>
+      <p class="cap">Two Opus agents miss only defended bootstrap. One Opus agent misses defended red science and rocket parts but passes defended bootstrap, four miss defended bootstrap, solar night and rocket parts, and eight pass only the two red-science goals, blue science and rocket launch. Four Sol agents pass six, missing blue science and both defended goals; eight also pass six, trading rocket parts and bootstrap for blue science and defended bootstrap; two pass only red science, bootstrap and rocket launch. Sonnet passes at most two goals at any team size, Haiku and DeepSeek one, and Luna none.</p>
       <p class="cap">One square per goal on one world seed: filled = pass, × = fail, dotted = not run. Counts show goals passed / attempted per family.</p>
 
       <div class="matrix">
@@ -939,17 +941,60 @@ print(produced("rocket_part"))</pre></div>
     <!-- 04b -->
     <section class="rep">
       <h2 id="behaviors">How each model behaves on a team</h2>
-      <p>Every model shares a few failure patterns (see <a href="#s6">Conclusions</a>), but each also has a habit no other model shows. These come from the messages and build logs of all 189 runs; percentages are shares of agent-rounds or messages, pooled over the nine goals.</p>
-      <table class="t">
-        <tr><th>Model</th><th>Signature behavior</th><th>Evidence</th></tr>
-        <tr><td>Opus</td><td><b>Defers to a leader.</b> Large Opus teams elect agent 0 and wait for it. No other model does this.</td><td>In round 0 with eight agents, 44% of Opus agents defer to agent 0 and 10% build; Sol defers 1% and builds 71%, Haiku 0% and 32%. Messages telling teammates to hold or stay read-only rise from about 5% of messages with four agents to 43–47% with eight, and idle agent-rounds climb from 22% alone to 77% with eight.</td></tr>
-        <tr><td>Sol</td><td><b>Claims work and pushes.</b> Agents assign themselves jobs from round 0 and send the most requests and urgent messages.</td><td>56% of eight-agent Sol agents claim a job in round 0. Successful builds per run rise from 167 alone to 567 with eight, the only model whose output keeps scaling. A lone Sol agent overflows its 4,000-character feedback in 62% of rounds; splitting the work cuts this to 15%.</td></tr>
-        <tr><td>Sonnet</td><td><b>Says little, but says where.</b> The quietest model, and the most precise when it speaks.</td><td>About 0.2 messages per agent-round, a quarter of Opus's rate, and 70–83% of messages give coordinates. It stalls most often waiting for a teammate to fix a shared blocker; the pairs that pass have one agent claim the fix and its location.</td></tr>
-        <tr><td>Haiku</td><td><b>Acts fast and fails often.</b> Agents build early and keep building, but more agents means more broken builds, not more progress.</td><td>Successful builds triple from one agent to eight while failed calls rise from 28% to 45%. When Haiku agents pause, it is to diagnose errors, not to defer: waiting messages rise 12% → 23% → 32%. One pass at most at any team size.</td></tr>
-        <tr><td>Luna</td><td><b>Asks rather than acts.</b> Agents request work from each other and rarely commit to doing it themselves, and they stay idle even alone.</td><td>59–77% of messages are requests and 0–1% are claims. 67% of agent-rounds are idle with one agent and 75–79% on any team. On bootstrap, two agents send 98 messages about power and place 8 buildings in 60 rounds. No passes.</td></tr>
-        <tr><td>DeepSeek</td><td><b>Terse status reports.</b> Short messages that report rather than coordinate.</td><td>Median 18 words per message (Haiku 53, Opus 43), and it rarely asks a teammate for anything. Four-agent runs only.</td></tr>
-      </table>
-      <p class="fnote">Behavior shares come from keyword classification of agent messages and the per-round build logs. Team sizes 1, 2, 4 and 8 for every model except DeepSeek (4 only).</p>
+      <p>No agent is told how to coordinate, yet each model falls into its own way of working together, and that habit decides what happens as the team grows. Below, each model’s signature is shown at every team size. An agent-round is idle when the agent makes no successful world action that round; successful actions are accepted calls that change the world (placing, inserting, taking, crafting, clearing), per run, averaged over the nine goals.</p>
+      <h3>Opus: hands control to agent 0, then waits</h3>
+      <p>Alone, Opus is the busiest model, idle in only 22% of rounds. In a team it grows more cautious with every agent added. In round 0, pairs mostly start building; with four agents, a fifth of the agents other than agent 0 defer to it; with eight, nearly half do, and only 10% of agents act at all. The deference lasts the whole run. On the two bootstrap goals, which a single Opus agent passes, the eight-agent team decides the goal is impossible and spends about 50 rounds posting status lines such as “read-only; pool untouched. Still deferring to agent0”. Even outside bootstrap, 68% of eight-agent rounds are idle. No other model defers to agent 0 in more than 11% of agents, and Luna and DeepSeek never do. The team’s total output stays flat, so each extra Opus agent mostly waits.</p>
+        <table class="t sig"><tr><th>Agents</th><th>1</th><th>2</th><th>4</th><th>8</th></tr>
+          <tr><td>Defer to agent 0 in round 0 (agents 1+)</td><td class="m">–</td><td class="m">0%</td><td class="m">22%</td><td class="m">48%</td></tr>
+          <tr><td>Agents acting in round 0</td><td class="m">–</td><td class="m">39%</td><td class="m">22%</td><td class="m">10%</td></tr>
+          <tr><td>Idle agent-rounds</td><td class="m">22%</td><td class="m">31%</td><td class="m">44%</td><td class="m">77%</td></tr>
+          <tr><td>Idle, excluding bootstrap</td><td class="m">21%</td><td class="m">35%</td><td class="m">50%</td><td class="m">68%</td></tr>
+          <tr><td>Successful actions</td><td class="m">260</td><td class="m">320</td><td class="m">330</td><td class="m">349</td></tr>
+          <tr><td>Bootstrap goals passed (of 2)</td><td class="m">2</td><td class="m">1</td><td class="m">0</td><td class="m">0</td></tr>
+          <tr><td>Goals passed</td><td class="m">7</td><td class="m">8</td><td class="m">6</td><td class="m">4</td></tr>
+        </table>
+      <h3>Sol: everyone acts at once and keeps acting</h3>
+      <p>Sol agents start working in round 0 at every team size and almost never report holding back. On every team size Sol has the fewest idle rounds of any model (tied with Opus in pairs), and most of its messages at two and four agents direct a teammate to do something. Every model’s action count rises with team size, but Sol is the only one whose passes rise with it: one goal alone, three with two agents, six with four or eight. Splitting the work also helps Sol see its own results: a lone agent overflows the 4,000 characters of feedback it is shown in 62% of rounds, and an agent in a team of eight in 15%.</p>
+        <table class="t sig"><tr><th>Agents</th><th>1</th><th>2</th><th>4</th><th>8</th></tr>
+          <tr><td>Agents acting in round 0</td><td class="m">–</td><td class="m">72%</td><td class="m">83%</td><td class="m">71%</td></tr>
+          <tr><td>Messages reporting holding</td><td class="m">–</td><td class="m">1%</td><td class="m">1%</td><td class="m">3%</td></tr>
+          <tr><td>Messages directing a teammate</td><td class="m">–</td><td class="m">83%</td><td class="m">60%</td><td class="m">47%</td></tr>
+          <tr><td>Idle agent-rounds</td><td class="m">44%</td><td class="m">31%</td><td class="m">37%</td><td class="m">46%</td></tr>
+          <tr><td>Feedback overflowing (rounds)</td><td class="m">62%</td><td class="m">38%</td><td class="m">21%</td><td class="m">15%</td></tr>
+          <tr><td>Successful actions</td><td class="m">167</td><td class="m">337</td><td class="m">423</td><td class="m">567</td></tr>
+          <tr><td>Goals passed</td><td class="m">1</td><td class="m">3</td><td class="m">6</td><td class="m">6</td></tr>
+        </table>
+      <h3>Sonnet: reads first and says little</h3>
+      <p>Sonnet opens by reading rather than acting. Even alone it never makes a successful action in round 0, and in teams only 0–6% of agents do. It sends about a quarter as many messages per agent-round as Opus, Haiku or Sol at every team size. It is idle more often than any other model on teams. Adding agents adds actions but adds failed calls faster: the failure share more than triples from one agent to eight, mostly calls that find the shared inventory already emptied by a teammate. Sonnet never passes more than two goals.</p>
+        <table class="t sig"><tr><th>Agents</th><th>1</th><th>2</th><th>4</th><th>8</th></tr>
+          <tr><td>Messages per agent-round</td><td class="m">–</td><td class="m">0.23</td><td class="m">0.24</td><td class="m">0.19</td></tr>
+          <tr><td>Agents acting in round 0</td><td class="m">–</td><td class="m">0%</td><td class="m">6%</td><td class="m">6%</td></tr>
+          <tr><td>Idle agent-rounds</td><td class="m">66%</td><td class="m">77%</td><td class="m">78%</td><td class="m">83%</td></tr>
+          <tr><td>Failed calls</td><td class="m">12%</td><td class="m">26%</td><td class="m">37%</td><td class="m">41%</td></tr>
+          <tr><td>Goals passed</td><td class="m">1</td><td class="m">2</td><td class="m">1</td><td class="m">1</td></tr>
+        </table>
+      <h3>Haiku: acts fast, fails often, and nobody takes charge</h3>
+      <p>Haiku acts early, and at eight agents only Sol makes more successful actions, but its accuracy falls as the team grows: from four agents on, 43–45% of its calls fail. As failures pile up, more agents report that they are holding off (35% of messages at eight). Unlike Opus they never settle on a leader: agents keep asking for one owner (“whoever owns the iron chain, post pool iron…”) and nobody takes the job. Haiku is also the only model that writes messages when working alone. More activity never turns into passes: one at most at any size.</p>
+        <table class="t sig"><tr><th>Agents</th><th>1</th><th>2</th><th>4</th><th>8</th></tr>
+          <tr><td>Agents acting in round 0</td><td class="m">–</td><td class="m">50%</td><td class="m">56%</td><td class="m">32%</td></tr>
+          <tr><td>Failed calls</td><td class="m">28%</td><td class="m">28%</td><td class="m">43%</td><td class="m">45%</td></tr>
+          <tr><td>Messages reporting holding</td><td class="m">–</td><td class="m">13%</td><td class="m">25%</td><td class="m">35%</td></tr>
+          <tr><td>Idle agent-rounds</td><td class="m">49%</td><td class="m">48%</td><td class="m">62%</td><td class="m">70%</td></tr>
+          <tr><td>Successful actions</td><td class="m">142</td><td class="m">205</td><td class="m">282</td><td class="m">448</td></tr>
+          <tr><td>Goals passed</td><td class="m">1</td><td class="m">0</td><td class="m">1</td><td class="m">0</td></tr>
+        </table>
+      <h3>Luna: audits instead of building</h3>
+      <p>Luna narrates investigation. A fifth to a third of its messages say the agent is checking, inspecting, auditing or verifying something (“I’m checking feeds and will avoid modifying your fluid lines this round”); no other model does this in more than 2% of messages. Most of the rest ask a teammate for something. Its idleness does not come from the team: a lone Luna agent is idle in 67% of rounds, and agents on teams of any size in 75–79%. On bootstrap, two Luna agents send 102 messages, 99 of them about power, and place 8 buildings in 60 rounds. Luna passes nothing at any size.</p>
+        <table class="t sig"><tr><th>Agents</th><th>1</th><th>2</th><th>4</th><th>8</th></tr>
+          <tr><td>Messages saying “I’m checking / auditing”</td><td class="m">–</td><td class="m">36%</td><td class="m">30%</td><td class="m">22%</td></tr>
+          <tr><td>Messages asking a teammate</td><td class="m">–</td><td class="m">77%</td><td class="m">65%</td><td class="m">60%</td></tr>
+          <tr><td>Idle agent-rounds</td><td class="m">67%</td><td class="m">75%</td><td class="m">79%</td><td class="m">78%</td></tr>
+          <tr><td>Successful actions</td><td class="m">83</td><td class="m">122</td><td class="m">172</td><td class="m">306</td></tr>
+          <tr><td>Goals passed</td><td class="m">0</td><td class="m">0</td><td class="m">0</td><td class="m">0</td></tr>
+        </table>
+      <h3>DeepSeek: acts immediately, reports tersely</h3>
+      <p>Measured with four agents only. 78% of DeepSeek agents act in round 0, more than any model but Sol. Its messages are the shortest (median 18 words; Opus 43, Haiku 53), and only 6% ask a teammate for anything (Opus 37%, Sol 60%). It makes 378 successful actions per run, but 36% of its calls fail, and it passes one goal.</p>
+      <p class="fnote">Message categories come from keyword matching over every message in the 189 runs and were checked against samples of the messages themselves; treat them as approximate. The gaps between models are what matters. Idle rounds, actions and failures come directly from the action logs. Agents working alone have no teammates to message; only Haiku writes messages anyway (25 across its nine solo runs).</p>
     </section>
 
     <!-- 05 -->
@@ -961,12 +1006,12 @@ print(produced("rocket_part"))</pre></div>
     <!-- 06 -->
     <section class="rep">
       <h2 id="s6">Conclusions</h2>
-      <p><b>Shared priors coordinate agents for free, and make them collide.</b> Writing at the same moment without seeing each other, four Opus agents propose nearly the same division of labor in round 0, much as people converge on a Schelling focal point. The same sameness makes them reach for the same open job: two agents start competing solar fields, and eight tear down each other's belts. Identical models are easy to align and hard to differentiate.</p>
-      <p><b>Teams organize themselves in the model’s own style.</b> No agent is told how to coordinate, yet each model settles on a consistent structure: Opus elects agent 0 and waits for it, Sol agents claim jobs and push, Luna agents ask each other for work. The structure, not the agent count, predicts whether a larger team helps; see <a href="#behaviors">How each model behaves on a team</a>.</p>
-      <p><b>Whether more agents help depends on the model.</b> An Opus team completes about the same number of successful builds with two, four or eight agents (320, 330 and 349 per run), so output per agent falls almost in proportion to team size, an extreme form of the Ringelmann effect, driven by deference. Sol scales instead: 167 successful builds alone, 423 with four and 567 with eight, and passes go from one to three to six. Extra builds only count when they are accurate: Haiku’s triple from one agent to eight while its failure rate rises from 28% to 45%, and Luna’s nearly quadruple with no passes at any size.</p>
-      <p><b>Successful teams are pipelines, with no redundancy.</b> In 34 of 39 multi-agent passes, across every model and team size, removing any one agent's buildings fails the goal. Agents divide a single production chain rather than building parallel factories, which makes the team fast but fragile. All five exceptions are rocket launch, which starts from a running base, so the remaining agents can still finish the launch.</p>
-      <p><b>Agents share diagnoses but not responsibility.</b> Agents identify the blocker early and say so, then wait for someone else to fix it or start rival half-fixes, a pattern like the bystander effect. The teams that broke through had one agent claim the fix and say exactly where it would build. Talking is not enough, though: Haiku messages about as often as Opus but passes at most one goal, with 28–45% of its actions failing.</p>
-      <p><b>Agents treat a teammate's claim as evidence, not a hypothesis.</b> One agent's wrong conclusion, such as "not craftable" or "infeasible", is echoed by the others until it becomes the team's settled view, rather than being tested. This happens across models: on bootstrap, eight Opus agents and eight Luna agents each settle on an early recipe being impossible after one of their own has already crafted it. Two Luna agents on rocket launch show the extreme: they spend 140 of their 187 build calls inserting into silo slots the game reports as full, while one urges the other to refill a fuel buffer it calls empty. Lessons do not travel the other way: an error one agent hits often goes unreported, so its teammates repeat it.</p>
+      <p><b>Shared priors coordinate agents for free, and make them collide.</b> Writing at the same moment without seeing each other, four Opus agents break the job into the same parts in round 0 (power, iron, copper, assembly), and in three of nine goals also assign those parts identically, much as people converge on a Schelling focal point. The same sameness makes them reach for the same open job: on solar night two agents start competing solar fields in the same round, and on rocket launch three agents each report placing the same silo. Identical models are easy to align and hard to differentiate.</p>
+      <p><b>Teams organize themselves in the model’s own style.</b> No agent is told how to coordinate, yet each model settles on a consistent structure: Opus hands control to agent 0 and waits, Sol agents all act at once and direct each other, Haiku agents ask for an owner nobody becomes, and Luna agents audit rather than build. The structure, not the agent count, predicts whether a larger team helps; see <a href="#behaviors">How each model behaves on a team</a>.</p>
+      <p><b>Whether more agents help depends on the model.</b> An Opus team makes about the same number of successful actions with two, four or eight agents (320, 330 and 349 per run), so output per agent falls almost in proportion to team size, an extreme form of the Ringelmann effect, driven by deference. Sol scales instead: 167 successful actions alone, 423 with four and 567 with eight, and its passes go from one to three to six. Extra actions only count when they are accurate: Haiku’s triple from one agent to eight while its failure rate rises from 28% to 45%, and Luna’s nearly quadruple with no passes at any size.</p>
+      <p><b>Successful teams are pipelines, with no redundancy.</b> In 34 of the 39 multi-agent passes, removing any one agent’s buildings fails the goal. This holds for every model and team size that passed. Agents divide a single production chain rather than building parallel factories, which makes the team fast but fragile. All five exceptions are rocket launch, which starts from a running base, so removing some of the agents still lets the launch finish.</p>
+      <p><b>Agents share diagnoses but not responsibility.</b> Agents identify the blocker early and say so, then wait for someone else to fix it, a pattern like the bystander effect. On eight-agent bootstrap, every Opus and every Luna agent posts that it is holding or blocked for more than 30 rounds. The Sonnet and Opus teams that broke through had one agent claim the fix and say exactly where it would build: on defended red science, a Sonnet agent reports the blocked coal belt, says it will tunnel under it at a named tile, and does so the next round. Talking is not enough, though: Haiku sends as many messages as Opus or more, but passes at most one goal, with 28–45% of its build calls failing.</p>
+      <p><b>Agents treat a teammate’s claim as evidence, not a hypothesis.</b> One agent’s wrong conclusion, such as “no recipe” or “infeasible”, is echoed by the others until it becomes the team’s settled view, rather than being tested. On eight-agent bootstrap, about 100 Opus messages and 110 Luna messages, from every agent, repeat that buildings have no recipe, although teammates’ craft calls for buildings had been accepted (an Opus agent had already crafted an assembler, a Luna agent a generator). Two Luna agents on rocket launch show the extreme: they spend 140 of their 187 build calls inserting into silo slots the game reports as full, and one tells the other the fuel buffer is empty in the same round all 20 of its fuel inserts are refused as full. Lessons do not travel the other way: most errors that a teammate later repeats were never mentioned by the agent that hit them first (70–92%, depending on the model).</p>
     </section>
 
     <!-- 07 -->
