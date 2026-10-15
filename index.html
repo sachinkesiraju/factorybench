@@ -194,8 +194,7 @@ table.t{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(
 table.t th{font-family:var(--mono);font-size:10px;font-weight:400;color:var(--ink2);text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);background:var(--panel)}
 table.t td{padding:9px 10px;border-bottom:1px solid var(--rule2);vertical-align:top;line-height:18px}
 table.t tr:last-child td{border-bottom:0}
-table.t.sig{margin:8px 0 18px}
-table.t.sig td.m{text-align:right}
+table.t.beh td:nth-child(2){width:32%}
 table.t td.m{font-family:var(--mono);font-size:11.5px}
 table.t td.ok{color:var(--pass);font-weight:600}
 table.t td.fail{color:var(--fail);font-weight:600}
@@ -815,58 +814,22 @@ print(produced("rocket_part"))</pre></div>
           <div><div class="cells"><div class="cell f"></div><div class="cell p"></div></div><div class="mstat"><span>0.500</span><span>1/2</span></div></div>
         </div>
         <div class="mr">
-          <div class="who">Claude Opus 5.5<small>team size 4</small></div>
-          <div><div class="cells"><div class="cell p"></div><div class="cell p"></div><div class="cell p slow"></div><div class="cell f"></div></div><div class="mstat"><span>0.750</span><span>3/4</span></div></div>
-          <div><div class="cells"><div class="cell p"></div><div class="cell f"></div><div class="cell p"></div></div><div class="mstat"><span>0.667</span><span>2/3</span></div></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell p"></div></div><div class="mstat"><span>0.500</span><span>1/2</span></div></div>
-        </div>
-        <div class="mr">
           <div class="who">Claude Opus 5.5<small>team size 2</small></div>
           <div><div class="cells"><div class="cell p"></div><div class="cell p slow"></div><div class="cell p slow"></div><div class="cell f"></div></div><div class="mstat"><span>0.750</span><span>3/4</span></div></div>
           <div><div class="cells"><div class="cell p slow"></div><div class="cell p"></div><div class="cell p slow"></div></div><div class="mstat"><span>1.000</span><span>3/3</span></div></div>
           <div><div class="cells"><div class="cell p"></div><div class="cell p"></div></div><div class="mstat"><span>1.000</span><span>2/2</span></div></div>
         </div>
         <div class="mr">
+          <div class="who">Claude Opus 5.5<small>team size 4</small></div>
+          <div><div class="cells"><div class="cell p"></div><div class="cell p"></div><div class="cell p slow"></div><div class="cell f"></div></div><div class="mstat"><span>0.750</span><span>3/4</span></div></div>
+          <div><div class="cells"><div class="cell p"></div><div class="cell f"></div><div class="cell p"></div></div><div class="mstat"><span>0.667</span><span>2/3</span></div></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell p"></div></div><div class="mstat"><span>0.500</span><span>1/2</span></div></div>
+        </div>
+        <div class="mr">
           <div class="who">Claude Opus 5.5<small>team size 8</small></div>
           <div><div class="cells"><div class="cell p"></div><div class="cell p slow"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.500</span><span>2/4</span></div></div>
           <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell p slow"></div></div><div class="mstat"><span>0.333</span><span>1/3</span></div></div>
           <div><div class="cells"><div class="cell f"></div><div class="cell p"></div></div><div class="mstat"><span>0.500</span><span>1/2</span></div></div>
-        </div>
-        <div class="mr">
-          <div class="who">GPT-6.1 Sol<small>team size 4</small></div>
-          <div><div class="cells"><div class="cell p"></div><div class="cell f"></div><div class="cell p slow"></div><div class="cell f"></div></div><div class="mstat"><span>0.500</span><span>2/4</span></div></div>
-          <div><div class="cells"><div class="cell p slow"></div><div class="cell p slow"></div><div class="cell f"></div></div><div class="mstat"><span>0.667</span><span>2/3</span></div></div>
-          <div><div class="cells"><div class="cell p slow"></div><div class="cell p"></div></div><div class="mstat"><span>1.000</span><span>2/2</span></div></div>
-        </div>
-        <div class="mr">
-          <div class="who">Claude Sonnet 5.5<small>team size 2</small></div>
-          <div><div class="cells"><div class="cell p slow"></div><div class="cell p slow"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.500</span><span>2/4</span></div></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/3</span></div></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/2</span></div></div>
-        </div>
-        <div class="mr">
-          <div class="who">Claude Sonnet 5.5<small>team size 4</small></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/4</span></div></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell p slow"></div><div class="cell f"></div></div><div class="mstat"><span>0.333</span><span>1/3</span></div></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/2</span></div></div>
-        </div>
-        <div class="mr">
-          <div class="who">Claude Sonnet 5.5<small>team size 1</small></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/4</span></div></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/3</span></div></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell p slow"></div></div><div class="mstat"><span>0.500</span><span>1/2</span></div></div>
-        </div>
-        <div class="mr">
-          <div class="who">Claude Sonnet 5.5<small>team size 8</small></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/4</span></div></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/3</span></div></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell p"></div></div><div class="mstat"><span>0.500</span><span>1/2</span></div></div>
-        </div>
-        <div class="mr">
-          <div class="who">DeepSeek-V4-Pro<small>team size 4</small></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/4</span></div></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/3</span></div></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell p slow"></div></div><div class="mstat"><span>0.500</span><span>1/2</span></div></div>
         </div>
         <div class="mr">
           <div class="who">GPT-6.1 Sol<small>team size 1</small></div>
@@ -881,13 +844,55 @@ print(produced("rocket_part"))</pre></div>
           <div><div class="cells"><div class="cell f"></div><div class="cell p"></div></div><div class="mstat"><span>0.500</span><span>1/2</span></div></div>
         </div>
         <div class="mr">
+          <div class="who">GPT-6.1 Sol<small>team size 4</small></div>
+          <div><div class="cells"><div class="cell p"></div><div class="cell f"></div><div class="cell p slow"></div><div class="cell f"></div></div><div class="mstat"><span>0.500</span><span>2/4</span></div></div>
+          <div><div class="cells"><div class="cell p slow"></div><div class="cell p slow"></div><div class="cell f"></div></div><div class="mstat"><span>0.667</span><span>2/3</span></div></div>
+          <div><div class="cells"><div class="cell p slow"></div><div class="cell p"></div></div><div class="mstat"><span>1.000</span><span>2/2</span></div></div>
+        </div>
+        <div class="mr">
           <div class="who">GPT-6.1 Sol<small>team size 8</small></div>
           <div><div class="cells"><div class="cell p slow"></div><div class="cell f"></div><div class="cell f"></div><div class="cell p slow"></div></div><div class="mstat"><span>0.500</span><span>2/4</span></div></div>
           <div><div class="cells"><div class="cell p slow"></div><div class="cell p slow"></div><div class="cell p slow"></div></div><div class="mstat"><span>1.000</span><span>3/3</span></div></div>
           <div><div class="cells"><div class="cell f"></div><div class="cell p"></div></div><div class="mstat"><span>0.500</span><span>1/2</span></div></div>
         </div>
         <div class="mr">
+          <div class="who">Claude Sonnet 5.5<small>team size 1</small></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/4</span></div></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/3</span></div></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell p slow"></div></div><div class="mstat"><span>0.500</span><span>1/2</span></div></div>
+        </div>
+        <div class="mr">
+          <div class="who">Claude Sonnet 5.5<small>team size 2</small></div>
+          <div><div class="cells"><div class="cell p slow"></div><div class="cell p slow"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.500</span><span>2/4</span></div></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/3</span></div></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/2</span></div></div>
+        </div>
+        <div class="mr">
+          <div class="who">Claude Sonnet 5.5<small>team size 4</small></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/4</span></div></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell p slow"></div><div class="cell f"></div></div><div class="mstat"><span>0.333</span><span>1/3</span></div></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/2</span></div></div>
+        </div>
+        <div class="mr">
+          <div class="who">Claude Sonnet 5.5<small>team size 8</small></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/4</span></div></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/3</span></div></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell p"></div></div><div class="mstat"><span>0.500</span><span>1/2</span></div></div>
+        </div>
+        <div class="mr">
+          <div class="who">DeepSeek-V4-Pro<small>team size 4</small></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/4</span></div></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/3</span></div></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell p slow"></div></div><div class="mstat"><span>0.500</span><span>1/2</span></div></div>
+        </div>
+        <div class="mr">
           <div class="who">GPT-6 Luna<small>team size 1</small></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/4</span></div></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/3</span></div></div>
+          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/2</span></div></div>
+        </div>
+        <div class="mr">
+          <div class="who">GPT-6 Luna<small>team size 2</small></div>
           <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/4</span></div></div>
           <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/3</span></div></div>
           <div><div class="cells"><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/2</span></div></div>
@@ -900,12 +905,6 @@ print(produced("rocket_part"))</pre></div>
         </div>
         <div class="mr">
           <div class="who">GPT-6 Luna<small>team size 8</small></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/4</span></div></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/3</span></div></div>
-          <div><div class="cells"><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/2</span></div></div>
-        </div>
-        <div class="mr">
-          <div class="who">GPT-6 Luna<small>team size 2</small></div>
           <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/4</span></div></div>
           <div><div class="cells"><div class="cell f"></div><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/3</span></div></div>
           <div><div class="cells"><div class="cell f"></div><div class="cell f"></div></div><div class="mstat"><span>0.000</span><span>0/2</span></div></div>
@@ -941,60 +940,15 @@ print(produced("rocket_part"))</pre></div>
     <!-- 04b -->
     <section class="rep">
       <h2 id="behaviors">How each model behaves on a team</h2>
-      <p>No agent is told how to coordinate, yet each model falls into its own way of working together, and that habit decides what happens as the team grows. Below, each model’s signature is shown at every team size. An agent-round is idle when the agent makes no successful world action that round; successful actions are accepted calls that change the world (placing, inserting, taking, crafting, clearing), per run, averaged over the nine goals.</p>
-      <h3>Opus: hands control to agent 0, then waits</h3>
-      <p>Alone, Opus is the busiest model, idle in only 22% of rounds. In a team it grows more cautious with every agent added. In round 0, pairs mostly start building; with four agents, a fifth of the agents other than agent 0 defer to it; with eight, nearly half do, and only 10% of agents act at all. The deference lasts the whole run. On the two bootstrap goals, which a single Opus agent passes, the eight-agent team decides the goal is impossible and spends about 50 rounds posting status lines such as “read-only; pool untouched. Still deferring to agent0”. Even outside bootstrap, 68% of eight-agent rounds are idle. No other model defers to agent 0 in more than 11% of agents, and Luna and DeepSeek never do. The team’s total output stays flat, so each extra Opus agent mostly waits.</p>
-        <table class="t sig"><tr><th>Agents</th><th>1</th><th>2</th><th>4</th><th>8</th></tr>
-          <tr><td>Defer to agent 0 in round 0 (agents 1+)</td><td class="m">–</td><td class="m">0%</td><td class="m">22%</td><td class="m">48%</td></tr>
-          <tr><td>Agents acting in round 0</td><td class="m">–</td><td class="m">39%</td><td class="m">22%</td><td class="m">10%</td></tr>
-          <tr><td>Idle agent-rounds</td><td class="m">22%</td><td class="m">31%</td><td class="m">44%</td><td class="m">77%</td></tr>
-          <tr><td>Idle, excluding bootstrap</td><td class="m">21%</td><td class="m">35%</td><td class="m">50%</td><td class="m">68%</td></tr>
-          <tr><td>Successful actions</td><td class="m">260</td><td class="m">320</td><td class="m">330</td><td class="m">349</td></tr>
-          <tr><td>Bootstrap goals passed (of 2)</td><td class="m">2</td><td class="m">1</td><td class="m">0</td><td class="m">0</td></tr>
-          <tr><td>Goals passed</td><td class="m">7</td><td class="m">8</td><td class="m">6</td><td class="m">4</td></tr>
-        </table>
-      <h3>Sol: everyone acts at once and keeps acting</h3>
-      <p>Sol agents start working in round 0 at every team size and almost never report holding back. On every team size Sol has the fewest idle rounds of any model (tied with Opus in pairs), and most of its messages at two and four agents direct a teammate to do something. Every model’s action count rises with team size, but Sol is the only one whose passes rise with it: one goal alone, three with two agents, six with four or eight. Splitting the work also helps Sol see its own results: a lone agent overflows the 4,000 characters of feedback it is shown in 62% of rounds, and an agent in a team of eight in 15%.</p>
-        <table class="t sig"><tr><th>Agents</th><th>1</th><th>2</th><th>4</th><th>8</th></tr>
-          <tr><td>Agents acting in round 0</td><td class="m">–</td><td class="m">72%</td><td class="m">83%</td><td class="m">71%</td></tr>
-          <tr><td>Messages reporting holding</td><td class="m">–</td><td class="m">1%</td><td class="m">1%</td><td class="m">3%</td></tr>
-          <tr><td>Messages directing a teammate</td><td class="m">–</td><td class="m">83%</td><td class="m">60%</td><td class="m">47%</td></tr>
-          <tr><td>Idle agent-rounds</td><td class="m">44%</td><td class="m">31%</td><td class="m">37%</td><td class="m">46%</td></tr>
-          <tr><td>Feedback overflowing (rounds)</td><td class="m">62%</td><td class="m">38%</td><td class="m">21%</td><td class="m">15%</td></tr>
-          <tr><td>Successful actions</td><td class="m">167</td><td class="m">337</td><td class="m">423</td><td class="m">567</td></tr>
-          <tr><td>Goals passed</td><td class="m">1</td><td class="m">3</td><td class="m">6</td><td class="m">6</td></tr>
-        </table>
-      <h3>Sonnet: reads first and says little</h3>
-      <p>Sonnet opens by reading rather than acting. Even alone it never makes a successful action in round 0, and in teams only 0–6% of agents do. It sends about a quarter as many messages per agent-round as Opus, Haiku or Sol at every team size. It is idle more often than any other model on teams. Adding agents adds actions but adds failed calls faster: the failure share more than triples from one agent to eight, mostly calls that find the shared inventory already emptied by a teammate. Sonnet never passes more than two goals.</p>
-        <table class="t sig"><tr><th>Agents</th><th>1</th><th>2</th><th>4</th><th>8</th></tr>
-          <tr><td>Messages per agent-round</td><td class="m">–</td><td class="m">0.23</td><td class="m">0.24</td><td class="m">0.19</td></tr>
-          <tr><td>Agents acting in round 0</td><td class="m">–</td><td class="m">0%</td><td class="m">6%</td><td class="m">6%</td></tr>
-          <tr><td>Idle agent-rounds</td><td class="m">66%</td><td class="m">77%</td><td class="m">78%</td><td class="m">83%</td></tr>
-          <tr><td>Failed calls</td><td class="m">12%</td><td class="m">26%</td><td class="m">37%</td><td class="m">41%</td></tr>
-          <tr><td>Goals passed</td><td class="m">1</td><td class="m">2</td><td class="m">1</td><td class="m">1</td></tr>
-        </table>
-      <h3>Haiku: acts fast, fails often, and nobody takes charge</h3>
-      <p>Haiku acts early, and at eight agents only Sol makes more successful actions, but its accuracy falls as the team grows: from four agents on, 43–45% of its calls fail. As failures pile up, more agents report that they are holding off (35% of messages at eight). Unlike Opus they never settle on a leader: agents keep asking for one owner (“whoever owns the iron chain, post pool iron…”) and nobody takes the job. Haiku is also the only model that writes messages when working alone. More activity never turns into passes: one at most at any size.</p>
-        <table class="t sig"><tr><th>Agents</th><th>1</th><th>2</th><th>4</th><th>8</th></tr>
-          <tr><td>Agents acting in round 0</td><td class="m">–</td><td class="m">50%</td><td class="m">56%</td><td class="m">32%</td></tr>
-          <tr><td>Failed calls</td><td class="m">28%</td><td class="m">28%</td><td class="m">43%</td><td class="m">45%</td></tr>
-          <tr><td>Messages reporting holding</td><td class="m">–</td><td class="m">13%</td><td class="m">25%</td><td class="m">35%</td></tr>
-          <tr><td>Idle agent-rounds</td><td class="m">49%</td><td class="m">48%</td><td class="m">62%</td><td class="m">70%</td></tr>
-          <tr><td>Successful actions</td><td class="m">142</td><td class="m">205</td><td class="m">282</td><td class="m">448</td></tr>
-          <tr><td>Goals passed</td><td class="m">1</td><td class="m">0</td><td class="m">1</td><td class="m">0</td></tr>
-        </table>
-      <h3>Luna: audits instead of building</h3>
-      <p>Luna narrates investigation. A fifth to a third of its messages say the agent is checking, inspecting, auditing or verifying something (“I’m checking feeds and will avoid modifying your fluid lines this round”); no other model does this in more than 2% of messages. Most of the rest ask a teammate for something. Its idleness does not come from the team: a lone Luna agent is idle in 67% of rounds, and agents on teams of any size in 75–79%. On bootstrap, two Luna agents send 102 messages, 99 of them about power, and place 8 buildings in 60 rounds. Luna passes nothing at any size.</p>
-        <table class="t sig"><tr><th>Agents</th><th>1</th><th>2</th><th>4</th><th>8</th></tr>
-          <tr><td>Messages saying “I’m checking / auditing”</td><td class="m">–</td><td class="m">36%</td><td class="m">30%</td><td class="m">22%</td></tr>
-          <tr><td>Messages asking a teammate</td><td class="m">–</td><td class="m">77%</td><td class="m">65%</td><td class="m">60%</td></tr>
-          <tr><td>Idle agent-rounds</td><td class="m">67%</td><td class="m">75%</td><td class="m">79%</td><td class="m">78%</td></tr>
-          <tr><td>Successful actions</td><td class="m">83</td><td class="m">122</td><td class="m">172</td><td class="m">306</td></tr>
-          <tr><td>Goals passed</td><td class="m">0</td><td class="m">0</td><td class="m">0</td><td class="m">0</td></tr>
-        </table>
-      <h3>DeepSeek: acts immediately, reports tersely</h3>
-      <p>Measured with four agents only. 78% of DeepSeek agents act in round 0, more than any model but Sol. Its messages are the shortest (median 18 words; Opus 43, Haiku 53), and only 6% ask a teammate for anything (Opus 37%, Sol 60%). It makes 378 successful actions per run, but 36% of its calls fail, and it passes one goal.</p>
-      <p class="fnote">Message categories come from keyword matching over every message in the 189 runs and were checked against samples of the messages themselves; treat them as approximate. The gaps between models are what matters. Idle rounds, actions and failures come directly from the action logs. Agents working alone have no teammates to message; only Haiku writes messages anyway (25 across its nine solo runs).</p>
+      <table class="t beh">
+        <tr><th>Model</th><th>Signature behavior</th><th>Evidence</th></tr>
+        <tr><td>Opus</td><td><b>Hands control to one leader, then waits.</b> Works hardest alone; in bigger teams most agents wait for instructions.</td><td>In a pair, no Opus agent waits for a leader. In a team of eight, nearly half the agents wait for agent 0 to lead before doing anything, and only one in ten starts building. A lone Opus agent sits idle about a fifth of the time; in a team of eight, agents sit idle three quarters of the time, so the team builds barely more than a pair. No other model waits on a leader like this.</td></tr>
+        <tr><td>Sol</td><td><b>Everyone gets to work at once.</b> The least idle model in every team.</td><td>About three in four Sol agents start building immediately, whatever the team size, and they almost never hold back to wait for a teammate. It is the only model that does better as the team grows: one goal passed alone, three in pairs, six with four or eight agents.</td></tr>
+        <tr><td>Sonnet</td><td><b>Reads first and says little.</b> Studies the map before acting, even when working alone.</td><td>Sonnet agents almost never build at the start; they read the world first. They send about a quarter as many messages as Opus, Haiku or Sol. As the team grows, more of their actions fail, from about one in eight alone to two in five with eight agents, mostly because a teammate already used up the shared materials.</td></tr>
+        <tr><td>Haiku</td><td><b>Acts fast, fails often, and nobody takes charge.</b> Agents ask for someone to own the work; nobody does.</td><td>Haiku agents build early and often, but their mistakes grow with the team: more than one in four actions fail alone, and nearly half with eight agents. They post requests like “whoever owns the iron chain, post pool iron…” that no teammate takes on. It is also the only model that writes messages when it has no teammates.</td></tr>
+        <tr><td>Luna</td><td><b>Audits instead of building.</b> Describes what it is checking and asks teammates for things.</td><td>Between a fifth and a third of Luna’s messages say it is checking or auditing something, which other models almost never do; most of the rest ask a teammate to do something. It sits idle about two thirds of the time alone and three quarters of the time in a team, and passes no goal at any team size.</td></tr>
+      </table>
+      <p class="fnote">Message categories come from keyword matching over every message in the 189 runs, checked against samples of the messages; treat them as approximate.</p>
     </section>
 
     <!-- 05 -->
@@ -1006,12 +960,13 @@ print(produced("rocket_part"))</pre></div>
     <!-- 06 -->
     <section class="rep">
       <h2 id="s6">Conclusions</h2>
-      <p><b>Shared priors coordinate agents for free, and make them collide.</b> Writing at the same moment without seeing each other, four Opus agents break the job into the same parts in round 0 (power, iron, copper, assembly), and in three of nine goals also assign those parts identically, much as people converge on a Schelling focal point. The same sameness makes them reach for the same open job: on solar night two agents start competing solar fields in the same round, and on rocket launch three agents each report placing the same silo. Identical models are easy to align and hard to differentiate.</p>
-      <p><b>Teams organize themselves in the model’s own style.</b> No agent is told how to coordinate, yet each model settles on a consistent structure: Opus hands control to agent 0 and waits, Sol agents all act at once and direct each other, Haiku agents ask for an owner nobody becomes, and Luna agents audit rather than build. The structure, not the agent count, predicts whether a larger team helps; see <a href="#behaviors">How each model behaves on a team</a>.</p>
-      <p><b>Whether more agents help depends on the model.</b> An Opus team makes about the same number of successful actions with two, four or eight agents (320, 330 and 349 per run), so output per agent falls almost in proportion to team size, an extreme form of the Ringelmann effect, driven by deference. Sol scales instead: 167 successful actions alone, 423 with four and 567 with eight, and its passes go from one to three to six. Extra actions only count when they are accurate: Haiku’s triple from one agent to eight while its failure rate rises from 28% to 45%, and Luna’s nearly quadruple with no passes at any size.</p>
-      <p><b>Successful teams are pipelines, with no redundancy.</b> In 34 of the 39 multi-agent passes, removing any one agent’s buildings fails the goal. This holds for every model and team size that passed. Agents divide a single production chain rather than building parallel factories, which makes the team fast but fragile. All five exceptions are rocket launch, which starts from a running base, so removing some of the agents still lets the launch finish.</p>
-      <p><b>Agents share diagnoses but not responsibility.</b> Agents identify the blocker early and say so, then wait for someone else to fix it, a pattern like the bystander effect. On eight-agent bootstrap, every Opus and every Luna agent posts that it is holding or blocked for more than 30 rounds. The Sonnet and Opus teams that broke through had one agent claim the fix and say exactly where it would build: on defended red science, a Sonnet agent reports the blocked coal belt, says it will tunnel under it at a named tile, and does so the next round. Talking is not enough, though: Haiku sends as many messages as Opus or more, but passes at most one goal, with 28–45% of its build calls failing.</p>
-      <p><b>Agents treat a teammate’s claim as evidence, not a hypothesis.</b> One agent’s wrong conclusion, such as “no recipe” or “infeasible”, is echoed by the others until it becomes the team’s settled view, rather than being tested. On eight-agent bootstrap, about 100 Opus messages and 110 Luna messages, from every agent, repeat that buildings have no recipe, although teammates’ craft calls for buildings had been accepted (an Opus agent had already crafted an assembler, a Luna agent a generator). Two Luna agents on rocket launch show the extreme: they spend 140 of their 187 build calls inserting into silo slots the game reports as full, and one tells the other the fuel buffer is empty in the same round all 20 of its fuel inserts are refused as full. Lessons do not travel the other way: most errors that a teammate later repeats were never mentioned by the agent that hit them first (70–92%, depending on the model).</p>
+      <p>AI agents are starting to work in teams that share the same code, data and budgets. FCB measures how well they do it: one to eight copies of a model share a single factory built on Factorio 2.0’s rules, and must build production chains that keep running after they stop. It is hard and it separates models sharply: no model reaches every goal at any team size, and the gap between the strongest and weakest teams is wide. Across 189 runs of six frontier models, the same patterns appear regardless of which model is on the team.</p>
+      <p><b>Coordination, not capability, is the bottleneck.</b> Every model gets less done per agent as the team grows, and no team of eight comes close to eight times the work of one. The strongest agents are capable builders on their own (a single Opus agent reaches seven of the nine goals); what they lack is the ability to share one factory without waiting on or getting in the way of each other. Sol shows the gap can close: its output and its goals reached both keep rising with team size. Measuring that difference is exactly what FCB is built for.</p>
+      <p><b>Agents divide what they can see, not what they share.</b> Teams split up the map carefully: most messages say where an agent is building, and two agents rarely want the same spot. But nobody divides the shared stock of materials, and that is where teams actually collide: far more actions fail because the materials have run out than because a building is in the way. Every agent plans from the same snapshot, so each counts on materials a teammate may spend first.</p>
+      <p><b>Teams organize for speed, not resilience.</b> Agents split one production chain into links, like a human assembly line, and no team builds a backup. In 34 of the 39 times a team reached its goal, removing any one agent’s buildings would have failed it.</p>
+      <p><b>Activity is not teamwork.</b> Haiku teams message as often as Opus teams and, with eight agents, complete more actions, yet almost never reach a goal; Sonnet teams barely talk and do no worse. How much a team says or does tells you little about whether it succeeds.</p>
+      <p><b>Teams share plans, not failures.</b> Agents announce what they intend to build but rarely mention what went wrong, so teammates walk into the same errors. For every model, most errors that a teammate repeated had never been mentioned by the agent that hit them first.</p>
+      <p><b>What comes next.</b> Each finding points to a coordination strategy that can be tested directly: agents that reserve materials the way they claim space, teams that keep a shared log of failures, and team sizes matched to how much of the work can run in parallel. FCB is deterministic, so every run can be replayed exactly and each strategy measured against the same worlds. The next steps are testing those strategies, adding new frontier models as they are released (each costs tens to a few thousand dollars in API time to run at every team size), and mixing different models in one team.</p>
     </section>
 
     <!-- 07 -->
