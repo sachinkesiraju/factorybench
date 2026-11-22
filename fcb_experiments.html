@@ -167,7 +167,7 @@ details>.body{padding:4px 14px 6px;border-top:1px solid var(--rule2)}
 <li>The copy first loses every item agents put in by hand with <code>insert</code>, including hand items that have since moved through inserters, belts, wagons or recipes. On goals that allow a kickstart, a burner may keep up to 5 hand-inserted fuel items: enough to kickstart it, never enough to run on.</li>
 <li>The copy warms up for 30 game seconds, then runs the holdout. The score is the minimum rolling rate over the evaluation span, taken in the second half of the holdout.</li>
 <li>A passing holdout must also hold its rate over a durability run-on (by default twice the holdout). A factory that passes the forecast window but runs dry afterwards fails.</li>
-<li>The rocket launch is a completion goal on the run clock. A forecast copy cannot launch, so its verdict comes from the live launch counter.</li>
+<li>The rocket launch is a completion goal on the run clock. Its verdict adds the live launch count to what a copy of the world launches over warmup and holdout, and passes if the launch lands by the deadline. So a launch pass can be a forecast: 39 of the 40 passes in this release are, and one launched live.</li>
 </ul>
 <h3 id="the-difficulty-ladder">The difficulty ladder</h3>
 <p>The goals form a ladder. Each rung adds one mechanic or one kind of pressure over the rung below it.</p>
@@ -256,22 +256,22 @@ details>.body{padding:4px 14px 6px;border-top:1px solid var(--rule2)}
 </ul>
 <h3 id="counting-passes">Counting passes</h3>
 <ul>
-<li>The primary outcome is rounds to pass at the goal's horizon. A run that never passes counts as the full horizon.</li>
-<li>Pass fraction and the per-seed rounds-to-pass distribution are reported alongside it.</li>
+<li>The primary outcome is whether a run passes. Rounds to pass is listed for every run on the results page.</li>
 <li>A run is eligible only if it completed, had no model-service error or forbidden operation, and five replays reproduce its verdict and rates. Honest contract failures and agent-code exceptions are outcomes, not exclusions.</li>
-<li>Live production is reported next to every forecast verdict. A forecast pass with no live production is flagged.</li>
+<li>Every receipt records live production next to its forecast verdict.</li>
 </ul>
 <h2 id="how-teams-are-scored">How teams are scored</h2>
-<p>The teamwork score combines four terms for each run:</p>
+<p>A team of N gets N model calls and N build budgets a round. The starting stash and round budget are the same at every team size. So the fair comparison for a team of N is N agents each playing the same goal alone, with the same compute in total. If the team only matches the best of those N attempts, working together added nothing beyond more attempts.</p>
 <ul>
-<li><strong>Pass (0.35):</strong> 1 for a completed run that passes, otherwise 0.</li>
-<li><strong>Progress (0.20):</strong> mean progress over the round budget. Each round scores its coverage of the goal's target; after a passing round, the run gets full credit. Rocket launch has no rate target, so its progress is all-or-nothing.</li>
-<li><strong>Gain over solo (0.30):</strong> change in progress against the same model working alone on the same goal. Improvement is divided by the room to improve, <code>(team − solo) / (1 − solo)</code>; a decline is divided by solo progress, <code>(team − solo) / solo</code>.</li>
-<li><strong>Process quality (0.15):</strong> the mean of clean build calls (without collision, overwrite or stale state), effective agents divided by team size, and the share of agent-rounds with a successful build.</li>
+<li>Utility of a run: the mean of its progress curve over the round budget, counting 1 for every round from the pass on. It rewards getting further and getting there sooner.</li>
+<li>Best of N alone: the expected best utility of N solo attempts, estimated without bias from K = 16 solo runs per goal (seed 0 plus seeds 1–15). One set of 16 covers N = 2, 4, 8 and 16.</li>
+<li>Synergy for one goal and team size: <code>(team − best of N) / (1 − best of N)</code> when the team does better, <code>(team − best of N) / best of N</code> when it does worse. It runs from −1 to 1.</li>
+<li>Teamwork score: 100 × mean synergy over the nine goals and team sizes 2, 4, 8 and 16, which count equally. 0 means the team did as well as N separate attempts. Above 0, working together helped. Below 0, coordination cost more than it gave.</li>
 </ul>
-<p>N = 1 is the solo baseline, not a scored team size. The score is averaged across runs in each model/goal/team-size cell and across the nine goals; team-size scores are combined with weights 2:4:8. A model is not ranked if it has no solo baseline, an incomplete grid, or no progress at any team size.</p>
-<p>The public leaderboard scores the 287 runs in the v6.4 release, listed in <code>results/v6.4/suite_manifest.json</code>: unaffected earlier receipts, 73 reruns on the fixed simulator for runs hit by simulator bugs, and second-map (world seed 1) runs for six of the nine goals. Runs in the same model, goal and team-size cell are averaged, so most cells rest on two maps. DeepSeek V4 Pro is not in the release.</p>
-<p>The score has limits. Rocket-launch progress is all-or-nothing because there is no rate to measure. Each team of N also makes N model calls per round, so the score mixes coordination with parallel planning. Cells have one or two maps each, and on the 107 cells run on both maps 20 verdicts differ, so gaps under about 0.05 are noise. Scored runs use chat as their only coordination channel.</p>
+<p>Collisions, duplicated work and idle agents aren’t added on top. They already lower the team’s utility, and scoring them again would reward teams that do little. Clean work and participation stay on the results page as explanations.</p>
+<p>This release has one solo run per goal, so the best of N can’t be estimated yet. Until the solo replicates exist, the page shows an interim score: 0.50 × gain over one agent plus 0.50 × clean work. Gain over one agent: if both passed, <code>1 − team rounds / solo rounds</code>; otherwise the change in progress against the same model alone, divided by the room to improve, or by solo progress when worse. Clean work: <code>1 − interference share / 40%</code>, floored at 0. The interim gain mixes collaboration with extra compute.</p>
+<p>Both scores come from <code>fcb/team/teamwork_score.py</code>: <code>synergy_board()</code> for the teamwork score and <code>collaboration_board()</code> for the interim one. The interim score uses the 540 runs listed in <code>results/v6.4-official/suite_manifest.json</code>: twelve models, nine goals and five team sizes, with one run in each cell.</p>
+<p>Limits. Each team cell is one run, so small differences between models are noise. Where the best of N alone already passes almost at once, a team has no room to show a gain; the page will report how many cells that affects. If a model gives near-identical solo runs, its best of N equals one solo run, which is correct for that model.</p>
 <h2 id="reference-solutions">Reference solutions</h2>
 <h3 id="red_science_12_v4">Red science</h3>
 <p>Four agents build a steam-powered red-science factory across the seed-0 map: two pump → boiler → 2-engine chains, three burner coal drills, two iron and two copper furnaces, two gear assemblers feeding three red assemblers by direct insertion (18/min nominal). Each coal drill is kickstarted with 4 wood from a cleared tree, then fed for good by a burner inserter that picks coal off its own moving belt.</p>
