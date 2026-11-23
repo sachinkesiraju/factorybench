@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FCB Experiments</title>
+<title>Experiments · Factory Coordination Bench</title>
 <style>
 :root{
   --ink:#000;--ink2:#525252;--ink3:#8a8a8a;--rule:#e5e5e5;--rule2:#ededed;--panel:#fbfbfb;
@@ -240,6 +240,20 @@ details>.body{padding:4px 14px 6px;border-top:1px solid var(--rule2)}
 </tr>
 <tr>
 <td>9</td>
+<td>Rocket parts · defended</td>
+<td>0.1 parts/min</td>
+<td>30 × 120 s</td>
+<td>Pollution and four nests around the rocket chain; laser turrets, walls and repair</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Nuclear changeover</td>
+<td>10 blue/min</td>
+<td>48 × 120 s</td>
+<td>Double the blue base and carry it through every night on nuclear power</td>
+</tr>
+<tr>
+<td>11</td>
 <td>Rocket launch</td>
 <td>1 launch in 1200 s</td>
 <td>15 × 120 s</td>
@@ -247,7 +261,7 @@ details>.body{padding:4px 14px 6px;border-top:1px solid var(--rule2)}
 </tr>
 </tbody>
 </table></div>
-<p>Rungs 1–6 run on a 64×64 seed-0 map (the outpost on a 288×96 map). Rungs 7–9 run on a 128×128 seed-25 map with a pre-built base that belongs to nobody and costs nothing.</p>
+<p>Rungs 1–6 run on a 64×64 seed-0 map (the outpost on a 288×96 map). Rungs 7–11 run on a 128×128 seed-25 map with a pre-built base that belongs to nobody and costs nothing.</p>
 <h3 id="durability-check">Durability check</h3>
 <p>The forecast window is short (four minutes on red science). A factory can meet it on buffered stock and then decline. Two things guard against that:</p>
 <ul>
@@ -266,11 +280,11 @@ details>.body{padding:4px 14px 6px;border-top:1px solid var(--rule2)}
 <li>Utility of a run: the mean of its progress curve over the round budget, counting 1 for every round from the pass on. It rewards getting further and getting there sooner.</li>
 <li>Best of N alone: the expected best utility of N solo attempts, estimated without bias from K = 16 solo runs per goal (seed 0 plus seeds 1–15). One set of 16 covers N = 2, 4, 8 and 16.</li>
 <li>Synergy for one goal and team size: <code>(team − best of N) / (1 − best of N)</code> when the team does better, <code>(team − best of N) / best of N</code> when it does worse. It runs from −1 to 1.</li>
-<li>Teamwork score: 100 × mean synergy over the nine goals and team sizes 2, 4, 8 and 16, which count equally. 0 means the team did as well as N separate attempts. Above 0, working together helped. Below 0, coordination cost more than it gave.</li>
+<li>Teamwork score: 100 × mean synergy over the eleven goals and team sizes 2, 4, 8 and 16, which count equally. 0 means the team did as well as N separate attempts. Above 0, working together helped. Below 0, coordination cost more than it gave.</li>
 </ul>
 <p>Collisions, duplicated work and idle agents aren’t added on top. They already lower the team’s utility, and scoring them again would reward teams that do little. Clean work and participation stay on the results page as explanations.</p>
 <p>This release has one solo run per goal, so the best of N can’t be estimated yet. Until the solo replicates exist, the page shows an interim score: 0.50 × gain over one agent plus 0.50 × clean work. Gain over one agent: if both passed, <code>1 − team rounds / solo rounds</code>; otherwise the change in progress against the same model alone, divided by the room to improve, or by solo progress when worse. Clean work: <code>1 − interference share / 40%</code>, floored at 0. The interim gain mixes collaboration with extra compute.</p>
-<p>Both scores come from <code>fcb/team/teamwork_score.py</code>: <code>synergy_board()</code> for the teamwork score and <code>collaboration_board()</code> for the interim one. The interim score uses the 540 runs listed in <code>results/v6.4-official/suite_manifest.json</code>: twelve models, nine goals and five team sizes, with one run in each cell.</p>
+<p>Both scores come from <code>fcb/team/teamwork_score.py</code>: <code>synergy_board()</code> for the teamwork score and <code>collaboration_board()</code> for the interim one. The interim score uses 660 runs: the 540 listed in <code>results/v6.4-official/suite_manifest.json</code>, the 60 defended rocket-part runs in <code>results/v6-defended/</code> and the 60 nuclear runs in <code>results/v6-nuclear/</code>. That is twelve models, eleven goals and five team sizes, with one run in each cell.</p>
 <p>Limits. Each team cell is one run, so small differences between models are noise. Where the best of N alone already passes almost at once, a team has no room to show a gain; the page will report how many cells that affects. If a model gives near-identical solo runs, its best of N equals one solo run, which is correct for that model.</p>
 <h2 id="reference-solutions">Reference solutions</h2>
 <h3 id="red_science_12_v4">Red science</h3>

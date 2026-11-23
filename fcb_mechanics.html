@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FCB Mechanics</title>
+<title>Mechanics · Factory Coordination Bench</title>
 <style>
 :root{
   --ink:#000;--ink2:#525252;--ink3:#8a8a8a;--rule:#e5e5e5;--rule2:#ededed;--panel:#fbfbfb;
@@ -84,7 +84,7 @@ details>.body{padding:4px 14px 6px;border-top:1px solid var(--rule2)}
   <div class="mast-in">
     <div class="eyebrow"><a href="./">Factory Coordination Bench</a></div>
     <h1>Mechanics</h1>
-    <div class="sub">The rules of the simulator as they apply to the nine scored goals, measured against Factorio 2.0.</div>
+    <div class="sub">The rules of the simulator as they apply to the eleven scored goals, measured against Factorio 2.0.</div>
     <div class="links">
       <span class="off" title="The repository is not public yet">Repository</span>
       <a href="fcb_goals.html">Production goals</a>
@@ -108,10 +108,10 @@ details>.body{padding:4px 14px 6px;border-top:1px solid var(--rule2)}
   </nav>
   <main class="article">
     <section class="rep doc">
-<p>FCB runs on a deterministic simulator whose rules are measured against
+<p>This benchmark runs on a deterministic simulator whose rules are measured against
 Factorio 2.0: recipes, crafting times, machine speeds, belt and inserter rates,
 power, fluids and enemies use the game's own numbers. This page describes the
-rules that apply to the nine scored goals, and lists where the simulator still
+rules that apply to the eleven scored goals, and lists where the simulator still
 differs from the game.</p>
 <h2 id="how-a-run-works">How a run works</h2>
 <ul>
@@ -125,7 +125,7 @@ differs from the game.</p>
   of 1,000 calls per program, and a program may run for at most 60 seconds.</li>
 <li><strong>Time.</strong> Agents cannot advance time. After every program has run, the world
   advances a fixed number of game-seconds: 30 for most goals, 60 for blue
-  science and 120 for the rocket goals.</li>
+  science and 120 for the rocket and nuclear goals.</li>
 <li><strong>Messages.</strong> A message an agent sends during a round reaches its teammates
   at the start of the next round, whatever order the programs ran in. Chat is
   the only coordination channel in scored runs.</li>
@@ -139,11 +139,11 @@ differs from the game.</p>
 <p>After every round, a probe copies the world and runs the copy unattended. Agents
 cannot act on the copy.</p>
 <ul>
-<li><strong>Rate goals</strong> (eight of the nine). The copy warms up for 30 seconds and then
+<li><strong>Rate goals</strong> (ten of the eleven). The copy warms up for 30 seconds and then
   runs through the goal's holdout. The score is the <em>lowest</em> rolling production
   rate over the second half of the holdout, measured over the goal's span
   (60–1,200 seconds depending on the goal). A copy that passes keeps running
-  for twice the holdout and must hold the rate the whole time.</li>
+  for twice the holdout (4,200 seconds on the nuclear goal, long enough to need refuelling) and must hold the rate the whole time.</li>
 <li><strong>No stockpiles.</strong> Anything an agent put into the factory by hand, and
   anything made from it, is removed from the copy first, so only a
   self-sustaining factory can pass. Burner fuel inserted by hand to start a
@@ -165,7 +165,7 @@ cannot act on the copy.</p>
 <tbody>
 <tr>
 <td>Map</td>
-<td>64 × 64 tiles for the red-science and solar goals, 128 × 128 for blue science and the rocket goals, 288 tiles wide for the green-science outpost</td>
+<td>64 × 64 tiles for the red-science and solar goals, 128 × 128 for blue science, the rocket goals and the nuclear goal, 288 tiles wide for the green-science outpost</td>
 </tr>
 <tr>
 <td>Footprints</td>
@@ -181,7 +181,7 @@ cannot act on the copy.</p>
 </tr>
 <tr>
 <td>Starting bases</td>
-<td>Blue science, rocket parts and rocket launch start from a running factory built by a script before round 1. Base buildings belong to no agent, and nothing the base produced before round 1 counts toward the goal</td>
+<td>Blue science, rocket parts, rocket launch and the nuclear goal start from a running factory built by a script before round 1. Base buildings belong to no agent, and nothing the base produced before round 1 counts toward the goal</td>
 </tr>
 <tr>
 <td>Large maps</td>
@@ -301,6 +301,11 @@ cannot act on the copy.</p>
 <td>solar first, then steam, then accumulators; accumulators charge only from surplus</td>
 <td>same</td>
 </tr>
+<tr>
+<td>Nuclear</td>
+<td>a reactor makes 40 MW of heat and burns one fuel cell every 200 s whether the heat is used or not; a heat exchanger makes 103 steam/s; a steam turbine makes 5.82 MW; uranium mining needs sulfuric acid; 1,000 uranium processing crafts give 7 U-235; one fuel-cell craft makes 10 cells</td>
+<td>same, except U-235 is random in the game</td>
+</tr>
 </tbody>
 </table></div>
 <h2 id="fluids-and-oil">Fluids and oil</h2>
@@ -383,7 +388,7 @@ cannot act on the copy.</p>
 </tbody>
 </table></div>
 <h2 id="enemies-and-defence">Enemies and defence</h2>
-<p>Two goals (the defended red-science goals) place a biter spawner on the map.</p>
+<p>Three goals place enemy nests on the map: the two defended red-science goals have one biter spawner each, and the defended rocket part has four nests, two biter and two spitter, east of the base.</p>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -427,7 +432,7 @@ cannot act on the copy.</p>
 </table></div>
 <h2 id="where-the-simulator-differs-from-factorio">Where the simulator differs from Factorio</h2>
 <p>These differences are small and mostly make the world slightly easier. None of
-them removes what FCB measures: shared space, shared ore, shared power and
+them removes what this benchmark measures: shared space, shared ore, shared power and
 hand-offs between producers and consumers.</p>
 <ul>
 <li><strong>Machine output buffers</strong> are tighter: a machine stalls with 4 finished
@@ -439,6 +444,7 @@ hand-offs between producers and consumers.</p>
   pipe or machine are lost; a pipe-to-ground pair farther than its reach is
   refused rather than placed unconnected.</li>
 <li><strong>Power</strong> is recomputed every 30 ticks rather than every tick.</li>
+<li><strong>Uranium</strong>: U-235 comes out on a fixed schedule, each centrifuge’s first on its 72nd craft and then one every 143 or so, where the game rolls for it. A drill or inserter that starts a cycle in deep dusk keeps that cycle’s power, so it can sit idle for a while after dawn.</li>
 <li><strong>Pollution</strong> is absorbed by every land tile at the grass rate (the map has
   no sand), and machines at reduced power still emit at full rate.</li>
 <li><strong>Enemies</strong> use simplified pathing, launch one group at a time without
