@@ -84,7 +84,7 @@ details>.body{padding:4px 14px 6px;border-top:1px solid var(--rule2)}
   <div class="mast-in">
     <div class="eyebrow"><a href="./">Factory Coordination Bench</a></div>
     <h1>Mechanics</h1>
-    <div class="sub">The rules of the simulator as they apply to the eleven scored goals, measured against Factorio 2.0.</div>
+    <div class="sub">The rules of the simulator as they apply to the twelve scored goals, measured against Factorio 2.0.</div>
     <div class="links">
       <span class="off" title="The repository is not public yet">Repository</span>
       <a href="fcb_goals.html">Production goals</a>
@@ -111,7 +111,7 @@ details>.body{padding:4px 14px 6px;border-top:1px solid var(--rule2)}
 <p>This benchmark runs on a deterministic simulator whose rules are measured against
 Factorio 2.0: recipes, crafting times, machine speeds, belt and inserter rates,
 power, fluids and enemies use the game's own numbers. This page describes the
-rules that apply to the eleven scored goals, and lists where the simulator still
+rules that apply to the twelve scored goals, and lists where the simulator still
 differs from the game.</p>
 <h2 id="how-a-run-works">How a run works</h2>
 <ul>
@@ -125,7 +125,7 @@ differs from the game.</p>
   of 1,000 calls per program, and a program may run for at most 60 seconds.</li>
 <li><strong>Time.</strong> Agents cannot advance time. After every program has run, the world
   advances a fixed number of game-seconds: 30 for most goals, 60 for blue
-  science and 120 for the rocket and nuclear goals.</li>
+  science and 120 for the rocket, nuclear and purple + yellow goals.</li>
 <li><strong>Messages.</strong> A message an agent sends during a round reaches its teammates
   at the start of the next round, whatever order the programs ran in. Chat is
   the only coordination channel in scored runs.</li>
@@ -139,11 +139,11 @@ differs from the game.</p>
 <p>After every round, a probe copies the world and runs the copy unattended. Agents
 cannot act on the copy.</p>
 <ul>
-<li><strong>Rate goals</strong> (ten of the eleven). The copy warms up for 30 seconds and then
+<li><strong>Rate goals</strong> (eleven of the twelve). The copy warms up for 30 seconds and then
   runs through the goal's holdout. The score is the <em>lowest</em> rolling production
   rate over the second half of the holdout, measured over the goal's span
   (60–1,200 seconds depending on the goal). A copy that passes keeps running
-  for twice the holdout (4,200 seconds on the nuclear goal, long enough to need refuelling) and must hold the rate the whole time.</li>
+  for twice the holdout, or 4,200 seconds on the nuclear goal so that reactors need refuelling, and must hold the rate the whole time.</li>
 <li><strong>No stockpiles.</strong> Anything an agent put into the factory by hand, and
   anything made from it, is removed from the copy first, so only a
   self-sustaining factory can pass. Burner fuel inserted by hand to start a
@@ -165,7 +165,7 @@ cannot act on the copy.</p>
 <tbody>
 <tr>
 <td>Map</td>
-<td>64 × 64 tiles for the red-science and solar goals, 128 × 128 for blue science, the rocket goals and the nuclear goal, 288 tiles wide for the green-science outpost</td>
+<td>64 × 64 tiles for the red-science and solar goals, 128 × 128 for blue science, the rocket goals, the nuclear goal and purple + yellow, 288 tiles wide for the green-science outpost</td>
 </tr>
 <tr>
 <td>Footprints</td>
@@ -181,7 +181,7 @@ cannot act on the copy.</p>
 </tr>
 <tr>
 <td>Starting bases</td>
-<td>Blue science, rocket parts, rocket launch and the nuclear goal start from a running factory built by a script before round 1. Base buildings belong to no agent, and nothing the base produced before round 1 counts toward the goal</td>
+<td>Blue science, rocket parts, rocket launch, the nuclear goal and purple + yellow start from a running factory built by a script before round 1. Base buildings belong to no agent, and nothing the base produced before round 1 counts toward the goal</td>
 </tr>
 <tr>
 <td>Large maps</td>
@@ -437,6 +437,7 @@ hand-offs between producers and consumers.</p>
 <ul>
 <li><strong>Machine output buffers</strong> are tighter: a machine stalls with 4 finished
   items waiting (more for late-game recipes that make several at once).</li>
+<li><strong>Engine units</strong> are made without their pipe, which makes that step slightly easier.</li>
 <li><strong>Belts</strong> move items in fixed 8-tick steps rather than continuous spacing;
   throughput is exact.</li>
 <li><strong>Research</strong> runs as a first-in, first-out queue.</li>
